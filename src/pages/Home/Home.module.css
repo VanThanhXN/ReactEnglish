@@ -1,0 +1,40 @@
+.container {
+  padding: 90px 24px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 70px);
+}
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .container {
+    padding: 80px 20px 20px;
+    max-width: 100%;
+  }
+}
+
+/* Mobile landscape and portrait */
+@media (max-width: 768px) {
+  .container {
+    padding: 70px 16px 50px;
+    min-height: calc(100vh - 60px);
+    min-height: calc(-webkit-fill-available - 60px);
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 60px 12px 40px;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .container {
+    min-height: calc(-webkit-fill-available - 60px);
+  }
+}
+
+
+

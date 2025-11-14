@@ -1,0 +1,425 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #1976d2;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-height: 44px;
+  touch-action: manipulation;
+  margin-left: auto;
+}
+
+.editButton:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+.editButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.editButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: #f5f5f5;
+  color: #1a1a1a;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.backButton:hover {
+  background-color: #e5e5e5;
+}
+
+.backButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.error {
+  background-color: #fee;
+  color: #c33;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid #fcc;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #666;
+}
+
+.userCard {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.userHeader {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.userAvatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.userAvatarPlaceholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 48px;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
+  flex: 1;
+}
+
+.userName {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.userEmail {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.userDetails {
+  padding: 32px;
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 600;
+  color: #555;
+  min-width: 200px;
+  font-size: 14px;
+}
+
+.value {
+  color: #333;
+  font-size: 14px;
+  flex: 1;
+  word-break: break-word;
+}
+
+.role {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.roleAdmin {
+  background-color: #fee;
+  color: #c33;
+}
+
+.roleUser {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.statusActive {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.statusInactive {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.photoPreview {
+  max-width: 200px;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #e5e5e5;
+}
+
+.editForm {
+  padding: 32px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #1a1a1a;
+}
+
+.editActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.cancelButton {
+  padding: 12px 24px;
+  background-color: #f5f5f5;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #e5e5e5;
+}
+
+.cancelButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.saveButton {
+  padding: 12px 24px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: #000000;
+}
+
+.saveButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+}
+
+/* Mobile landscape and portrait */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .editButton {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .userHeader {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .userAvatar,
+  .userAvatarPlaceholder {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+
+  .userName {
+    font-size: 24px;
+  }
+
+  .userDetails {
+    padding: 24px;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .label {
+    min-width: auto;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .title {
+    font-size: 22px;
+  }
+
+  .userHeader {
+    padding: 20px;
+  }
+
+  .userAvatar,
+  .userAvatarPlaceholder {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  .userName {
+    font-size: 20px;
+  }
+
+  .userDetails {
+    padding: 20px;
+  }
+
+  .photoPreview {
+    max-width: 100%;
+  }
+
+  .editForm {
+    padding: 20px;
+  }
+
+  .editActions {
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+  }
+
+  .error {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .loading {
+    padding: 30px 20px;
+    font-size: 14px;
+  }
+}
+

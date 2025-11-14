@@ -1,0 +1,227 @@
+.header {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border-bottom: 1px solid #333;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.logo:hover {
+  color: #e0e0e0;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.userRole {
+  font-size: 12px;
+  color: #b0b0b0;
+  line-height: 1.2;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.logoutButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.logoutButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .leftSection {
+    gap: 24px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+}
+
+/* Mobile landscape and portrait */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .leftSection {
+    gap: 16px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .userInfo {
+    padding: 6px 12px;
+    gap: 10px;
+  }
+
+  .userAvatar {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .userName {
+    font-size: 13px;
+  }
+
+  .userRole {
+    font-size: 11px;
+  }
+
+  .logoutButton {
+    padding: 8px 12px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .logoutButton svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .logo {
+    font-size: 14px;
+  }
+
+  .userSection {
+    gap: 8px;
+  }
+
+  .userInfo {
+    padding: 4px 8px;
+    gap: 8px;
+  }
+
+  .userAvatar {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .userDetails {
+    display: none; /* Ẩn user details trên mobile nhỏ */
+  }
+
+  .logoutButton {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-height: 40px;
+  }
+
+  .logoutButton span {
+    display: none; /* Chỉ hiển thị icon trên mobile nhỏ */
+  }
+
+  .logoutButton svg {
+    margin: 0; /* Xóa margin khi chỉ có icon */
+  }
+}
+

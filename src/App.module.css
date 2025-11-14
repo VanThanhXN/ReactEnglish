@@ -1,0 +1,21 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: -webkit-fill-available; /* iOS Safari */
+}
+
+.main {
+  flex: 1 0 auto; /* Cho phép main mở rộng nhưng không co lại nhỏ hơn nội dung */
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px; /* Tạo khoảng cách với footer */
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .app {
+    min-height: -webkit-fill-available;
+  }
+}
+

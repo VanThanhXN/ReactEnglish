@@ -1,0 +1,404 @@
+.header {
+  background-color: #ffffff;
+  color: #1a1a1a;
+  border-bottom: 1px solid #e5e5e5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0; /* Đảm bảo header không bị co lại */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  position: relative;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #1a1a1a;
+  transition: all 0.2s;
+  border-radius: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.hamburger:hover {
+  background-color: #f5f5f5;
+}
+
+.hamburger svg {
+  width: 24px;
+  height: 24px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.logo:hover {
+  color: #000000;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.navLink {
+  color: #4a4a4a;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 0;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.navLink:hover {
+  color: #000000;
+  background-color: #f9f9f9;
+  border-bottom-color: #000000;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+}
+
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.loginBtn {
+  color: #4a4a4a;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.loginBtn:hover {
+  color: #000000;
+  background-color: #f5f5f5;
+}
+
+.registerBtn {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.registerBtn:hover {
+  background-color: #000000;
+}
+
+.userSection {
+  position: relative;
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.userMenu:hover {
+  background-color: #f5f5f5;
+}
+
+.userAvatar {
+  width: 36px;
+  height: 36px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.userName {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.chevron {
+  color: #4a4a4a;
+  transition: transform 0.2s;
+}
+
+.userMenu:hover .chevron {
+  transform: rotate(180deg);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 220px;
+  max-width: 280px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: slideDown 0.2s ease-out;
+  z-index: 1001;
+}
+
+.dropdownRight {
+  right: 24px;
+  left: auto;
+}
+
+.dropdownLeft {
+  left: 24px;
+  right: auto;
+}
+
+.mobileNav {
+  display: none;
+}
+
+.mobileNavVisible {
+  display: block;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.dropdownItem:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdownItem svg {
+  color: #666666;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  width: 100%;
+}
+
+.userInfoName {
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 2px;
+}
+
+.userInfoEmail {
+  font-size: 12px;
+  color: #666666;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 4px 0;
+}
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .navLink {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Mobile landscape and portrait */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .leftSection {
+    gap: 12px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .userName {
+    display: none;
+  }
+
+  .authButtons {
+    gap: 8px;
+  }
+
+  .loginBtn,
+  .registerBtn {
+    padding: 10px 16px;
+    font-size: 14px;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Ẩn user menu button trên mobile */
+  .userSection {
+    display: none;
+  }
+
+  .userMenu {
+    padding: 6px 10px;
+    min-height: 44px;
+  }
+
+  .userAvatar {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  /* Hiển thị mobile nav trong dropdown */
+  .mobileNav {
+    display: block;
+  }
+
+  .dropdown {
+    min-width: 260px;
+    max-width: calc(100vw - 32px);
+  }
+
+  .dropdownRight {
+    right: 16px;
+    left: auto;
+  }
+
+  .dropdownLeft {
+    left: 16px;
+    right: auto;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .leftSection {
+    gap: 8px;
+  }
+
+  .hamburger {
+    padding: 6px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .hamburger svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .loginBtn,
+  .registerBtn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}

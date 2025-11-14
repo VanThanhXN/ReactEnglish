@@ -1,0 +1,295 @@
+.footer {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  margin-top: auto;
+  border-top: 1px solid #333;
+  flex-shrink: 0; /* Đảm bảo footer không bị co lại */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 20px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 20px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+}
+
+.brandDescription {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #b0b0b0;
+  margin: 0;
+  max-width: 300px;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #ffffff;
+}
+
+.linksList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.linksList li {
+  margin: 0;
+}
+
+.link {
+  color: #b0b0b0;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+  display: inline-block;
+}
+
+.link:hover {
+  color: #ffffff;
+}
+
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #333;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.copyright {
+  font-size: 14px;
+  color: #b0b0b0;
+}
+
+.copyright p {
+  margin: 0;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.socialLink {
+  color: #b0b0b0;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s;
+}
+
+.socialLink:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.socialLink svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .container {
+    padding: 28px 20px 16px;
+  }
+
+  .content {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+
+  .brandDescription {
+    max-width: 100%;
+  }
+}
+
+/* Mobile landscape and portrait */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 16px 12px;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .section {
+    text-align: center;
+  }
+
+  .brandTitle {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  /* Ẩn mô tả brand trên mobile */
+  .brandDescription {
+    display: none;
+  }
+
+  .sectionTitle {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .linksList {
+    align-items: center;
+    gap: 6px;
+  }
+
+  .link {
+    font-size: 13px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    touch-action: manipulation;
+  }
+
+  /* Ẩn một số sections ít quan trọng trên mobile */
+  .section:nth-child(3),
+  .section:nth-child(4) {
+    display: none;
+  }
+
+  .bottomBar {
+    flex-direction: column;
+    text-align: center;
+    padding-top: 12px;
+    gap: 10px;
+  }
+
+  .copyright {
+    font-size: 12px;
+  }
+
+  .socialLinks {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .socialLink {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    touch-action: manipulation;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .container {
+    padding: 16px 12px 10px;
+  }
+
+  .content {
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .brandTitle {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+
+  .sectionTitle {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .linksList {
+    gap: 4px;
+  }
+
+  .link {
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .bottomBar {
+    padding-top: 10px;
+    gap: 8px;
+  }
+
+  .copyright {
+    font-size: 11px;
+  }
+
+  .socialLink {
+    width: 32px;
+    height: 32px;
+    min-height: 32px;
+  }
+
+  .socialLink svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .container {
+    padding: 18px 16px 10px;
+  }
+
+  .content {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  /* Ẩn mô tả brand trên mobile landscape */
+  .brandDescription {
+    display: none;
+  }
+
+  /* Ẩn sections ít quan trọng */
+  .section:nth-child(3),
+  .section:nth-child(4) {
+    display: none;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .footer {
+    position: relative;
+  }
+}
+

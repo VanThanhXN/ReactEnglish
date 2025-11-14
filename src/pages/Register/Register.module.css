@@ -1,0 +1,478 @@
+.pageWrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  max-width: 900px;
+  width: 100%;
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.leftSection {
+  flex: 1;
+  background: linear-gradient(
+      rgba(106, 17, 203, 0.8),
+      rgba(37, 117, 252, 0.8)
+    ),
+    url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rightSection {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logoIcon {
+  font-size: 32px;
+  font-weight: bold;
+  color: #6a11cb;
+  margin-right: 10px;
+}
+
+.logoText {
+  font-size: 28px;
+  font-weight: 700;
+  color: #6a11cb;
+}
+
+.leftTitle {
+  font-size: 32px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.leftDescription {
+  margin-top: 15px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.title {
+  font-size: 26px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  color: #555;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px; /* Minimum 16px to prevent iOS zoom */
+  transition: all 0.3s;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+  outline: none;
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.passwordContainer {
+  position: relative;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.togglePassword svg {
+  width: 20px;
+  height: 20px;
+}
+
+.togglePassword:hover:not(:disabled) {
+  color: #6a11cb;
+}
+
+.togglePassword:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.passwordStrength {
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.strengthBar {
+  height: 3px;
+  background-color: #eee;
+  border-radius: 5px;
+  margin-top: 3px;
+  overflow: hidden;
+}
+
+.strengthFill {
+  height: 100%;
+  width: 0%;
+  transition: all 0.3s;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 11px;
+  margin-top: 3px;
+  animation: shake 0.3s;
+}
+
+.successMessage {
+  color: #2ecc71;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.btn {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  margin-top: 8px;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.divider {
+  text-align: center;
+  margin: 16px 0;
+  position: relative;
+  color: #999;
+  font-size: 13px;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #ddd;
+  z-index: 1;
+}
+
+.divider span {
+  background-color: white;
+  padding: 0 15px;
+  position: relative;
+  z-index: 2;
+}
+
+.gmailBtn {
+  background-color: white;
+  color: #555;
+  border: 1px solid #ddd;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gmailBtn:hover:not(:disabled) {
+  border-color: #6a11cb;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gmailBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.gmailIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.loginLink {
+  text-align: center;
+  margin-top: 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.link {
+  color: #6a11cb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.features {
+  margin-top: 30px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.featureIcon {
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .pageWrapper {
+    padding: 16px;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+}
+
+/* Mobile landscape and portrait */
+@media (max-width: 768px) {
+  .pageWrapper {
+    padding: 12px;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  .container {
+    flex-direction: column;
+    margin: 0;
+    border-radius: 16px;
+    min-height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .leftSection {
+    padding: 24px 20px;
+    min-height: auto;
+  }
+
+  .rightSection {
+    padding: 32px 24px;
+    max-height: none;
+  }
+
+  .leftTitle {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .leftDescription {
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .input {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .btn {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .gmailBtn {
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .loginLink {
+    font-size: 14px;
+    margin-top: 16px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 8px;
+  }
+
+  .container {
+    border-radius: 12px;
+  }
+
+  .leftSection {
+    padding: 20px 16px;
+    display: none;
+  }
+
+  .rightSection {
+    padding: 24px 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .input {
+    padding: 12px;
+  }
+
+  .btn,
+  .gmailBtn {
+    padding: 12px;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .pageWrapper {
+    padding: 8px;
+  }
+
+  .container {
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .leftSection {
+    padding: 16px;
+    min-height: auto;
+  }
+
+  .rightSection {
+    padding: 20px;
+  }
+
+  .formGroup {
+    margin-bottom: 14px;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .pageWrapper {
+    min-height: -webkit-fill-available;
+  }
+
+  .input {
+    font-size: 16px !important;
+  }
+}
+
