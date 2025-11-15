@@ -1,20 +1,40 @@
 .pageWrapper {
-  min-height: 100vh;
+  height: 100vh;
+  height: -webkit-fill-available; /* iOS Safari */
+  max-height: 100vh;
+  max-height: -webkit-fill-available;
   background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); /* Safe area for devices with notch */
+  overflow: hidden;
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.pageWrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .container {
   display: flex;
   max-width: 900px;
   width: 100%;
+  max-height: calc(100vh - 40px);
+  max-height: calc(-webkit-fill-available - 40px);
   background-color: white;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .leftSection {
@@ -33,29 +53,38 @@
 
 .rightSection {
   flex: 1;
-  padding: 50px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow: hidden;
+  min-height: 0;
+  max-height: 100%;
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.rightSection::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .logo {
   display: flex;
   align-items: center;
   margin-bottom: 30px;
+  justify-content: center;
 }
 
 .logoIcon {
-  font-size: 32px;
-  font-weight: bold;
-  color: #6a11cb;
-  margin-right: 10px;
+  display: none;
 }
 
 .logoText {
   font-size: 28px;
   font-weight: 700;
   color: #6a11cb;
+  margin: 0;
 }
 
 .leftTitle {
@@ -73,23 +102,26 @@
 
 .title {
   font-size: 28px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   color: #333;
+  font-weight: 800;
 }
 
 .subtitle {
-  color: #666;
-  margin-bottom: 30px;
+  display: none;
 }
 
 .form {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   position: relative;
+  flex-shrink: 0;
 }
 
 .label {
@@ -109,11 +141,16 @@
   -webkit-appearance: none; /* Remove iOS default styling */
   appearance: none;
   box-sizing: border-box;
+  outline: none;
 }
 
 .input:focus {
   border-color: #6a11cb;
   box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+  outline: none;
+}
+
+.input:focus-visible {
   outline: none;
 }
 
@@ -140,6 +177,15 @@
   align-items: center;
   justify-content: center;
   transition: color 0.2s;
+  outline: none;
+}
+
+.togglePassword:focus {
+  outline: none;
+}
+
+.togglePassword:focus-visible {
+  outline: none;
 }
 
 .togglePassword svg {
@@ -163,8 +209,9 @@
   border-radius: 10px;
   font-size: 14px;
   border: 1px solid #fecaca;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   animation: shake 0.3s;
+  flex-shrink: 0;
 }
 
 @keyframes shake {
@@ -182,8 +229,9 @@
 
 .forgotPasswordLink {
   text-align: right;
-  margin-bottom: 10px;
-  margin-top: -5px;
+  margin-bottom: 20px;
+  margin-top: -6px;
+  flex-shrink: 0;
 }
 
 .forgotLink {
@@ -203,16 +251,27 @@
   background: linear-gradient(to right, #6a11cb, #2575fc);
   color: white;
   border: none;
-  padding: 15px;
+  padding: 14px;
   border-radius: 10px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
   width: 100%;
-  margin-top: 10px;
-  min-height: 44px; /* Minimum touch target size */
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  margin-top: 8px;
+  min-height: 48px;
+  touch-action: manipulation;
+  outline: none;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(106, 17, 203, 0.4);
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: none;
 }
 
 .btn:hover:not(:disabled) {
@@ -228,9 +287,10 @@
 
 .divider {
   text-align: center;
-  margin: 20px 0;
+  margin: 18px 0;
   position: relative;
   color: #999;
+  flex-shrink: 0;
 }
 
 .divider::before {
@@ -245,7 +305,7 @@
 }
 
 .divider span {
-  background-color: white;
+  background-color: transparent;
   padding: 0 15px;
   position: relative;
   z-index: 2;
@@ -265,6 +325,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none;
+}
+
+.gmailBtn:focus {
+  outline: none;
+}
+
+.gmailBtn:focus-visible {
+  outline: none;
 }
 
 .gmailBtn:hover:not(:disabled) {
@@ -285,8 +354,9 @@
 
 .signupLink {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 18px;
   color: #666;
+  flex-shrink: 0;
 }
 
 .link {
@@ -321,6 +391,13 @@
   font-weight: bold;
 }
 
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
 /* Tablet and below */
 @media (max-width: 1024px) {
   .pageWrapper {
@@ -330,133 +407,662 @@
   .container {
     max-width: 100%;
   }
+
+  .rightSection {
+    padding: 40px;
+  }
 }
 
 /* Mobile landscape and portrait */
 @media (max-width: 768px) {
   .pageWrapper {
-    padding: 12px;
-    min-height: 100vh;
-    min-height: -webkit-fill-available; /* iOS Safari */
+    padding: 0;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    max-height: -webkit-fill-available;
+    background: linear-gradient(135deg, rgba(106, 17, 203, 0.9) 0%, rgba(37, 117, 252, 0.9) 100%),
+                url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .pageWrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(106, 17, 203, 0.8) 0%, rgba(37, 117, 252, 0.8) 100%);
+    z-index: 0;
   }
 
   .container {
     flex-direction: column;
-    margin: 0;
-    border-radius: 16px;
-    min-height: auto;
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
     max-height: 100vh;
-    overflow-y: auto;
+    max-height: -webkit-fill-available;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    position: relative;
+    z-index: 1;
   }
 
   .leftSection {
-    padding: 24px 20px;
-    min-height: auto;
+    display: none;
   }
 
   .rightSection {
-    padding: 32px 24px;
+    padding: 24px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 0;
+    max-height: 100%;
+    background: rgba(255, 255, 255, 0.99);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    margin: 12px;
+    border-radius: 28px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    position: relative;
   }
 
-  .leftTitle {
-    font-size: 22px;
-    margin-bottom: 12px;
+  .rightSection::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 28px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(106, 17, 203, 0.3), rgba(37, 117, 252, 0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 
-  .leftDescription {
-    font-size: 14px;
+  .logo {
+    justify-content: center;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+  }
+
+  .logoIcon {
+    display: none;
+  }
+
+  .logoText {
+    font-size: 28px;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(106, 17, 203, 0.2);
   }
 
   .title {
-    font-size: 22px;
-    margin-bottom: 8px;
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #1a202c;
+    font-weight: 900;
+    text-align: center;
+    flex-shrink: 0;
+    letter-spacing: -0.3px;
   }
 
   .subtitle {
+    display: none;
+  }
+
+  .form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .formGroup {
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 8px;
+    color: #374151;
+    font-weight: 700;
     font-size: 14px;
-    margin-bottom: 24px;
+    letter-spacing: 0.2px;
   }
 
   .input {
-    padding: 14px;
-    font-size: 16px; /* Keep 16px to prevent iOS zoom */
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    outline: none;
+    background: #ffffff;
+    color: #1a202c;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   }
 
-  .btn {
-    padding: 14px;
-    font-size: 16px;
+  .input:focus {
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.12),
+                0 4px 12px rgba(106, 17, 203, 0.15);
+    outline: none;
+    transform: translateY(-2px);
+    background: #ffffff;
   }
 
-  .gmailBtn {
-    padding: 14px;
-    font-size: 16px;
+  .input:focus-visible {
+    outline: none;
+  }
+
+  .input::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+  }
+
+  .togglePassword {
+    right: 16px;
+    color: #6b7280;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .togglePassword:focus {
+    outline: none;
+  }
+
+  .togglePassword:focus-visible {
+    outline: none;
+  }
+
+  .togglePassword:hover:not(:disabled) {
+    color: #6a11cb;
+    transform: scale(1.15);
+  }
+
+  .forgotPasswordLink {
+    text-align: right;
+    margin-bottom: 14px;
+    margin-top: -4px;
+    flex-shrink: 0;
   }
 
   .forgotLink {
-    font-size: 14px;
+    color: #6a11cb;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .forgotLink::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    transition: width 0.3s ease;
+  }
+
+  .forgotLink:hover {
+    color: #2575fc;
+  }
+
+  .forgotLink:hover::after {
+    width: 100%;
+  }
+
+  .btn {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    min-height: 48px;
+    touch-action: manipulation;
+    outline: none;
+    flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba(106, 17, 203, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .btn:hover::before {
+    left: 100%;
+  }
+
+  .btn:focus {
+    outline: none;
+  }
+
+  .btn:focus-visible {
+    outline: none;
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(106, 17, 203, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .divider {
+    text-align: center;
+    margin: 16px 0;
+    padding: 0;
+    line-height: 1.2;
+    position: relative;
+    color: #9ca3af;
+    font-size: 13px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e5e7eb 50%, transparent);
+    z-index: 1;
+  }
+
+  .divider span {
+    background-color: transparent;
+    padding: 0 16px;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+  }
+
+  .gmailBtn {
+    background-color: #ffffff;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    min-height: 48px;
+    gap: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .gmailBtn:focus {
+    outline: none;
+  }
+
+  .gmailBtn:focus-visible {
+    outline: none;
+  }
+
+  .gmailBtn:hover:not(:disabled) {
+    border-color: #6a11cb;
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    box-shadow: 0 6px 20px rgba(106, 17, 203, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .gmailBtn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .gmailIcon {
+    width: 22px;
+    height: 22px;
   }
 
   .signupLink {
-    font-size: 14px;
+    text-align: center;
     margin-top: 16px;
+    color: #64748b;
+    font-size: 14px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  .link {
+    color: #6a11cb;
+    text-decoration: none;
+    font-weight: 800;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    transition: width 0.3s ease;
+  }
+
+  .link:hover {
+    color: #2575fc;
+  }
+
+  .link:hover::after {
+    width: 100%;
+  }
+
+  .errorMessage {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #dc2626;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 13px;
+    border: 1px solid #fecaca;
+    margin-bottom: 18px;
+    animation: shake 0.3s;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+    font-weight: 600;
   }
 }
 
 /* Small mobile devices */
 @media (max-width: 480px) {
-  .pageWrapper {
-    padding: 8px;
-  }
-
-  .container {
-    border-radius: 12px;
-  }
-
-  .leftSection {
-    padding: 20px 16px;
-    display: none; /* Hide left section on very small screens */
-  }
-
   .rightSection {
     padding: 24px 20px;
+    margin: 12px;
+    border-radius: 24px;
+  }
+
+  .logo {
+    margin-bottom: 20px;
+  }
+
+  .logoText {
+    font-size: 24px;
   }
 
   .title {
-    font-size: 20px;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .formGroup {
+    margin-bottom: 16px;
+  }
+
+  .label {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .input {
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+
+  .input:focus {
+    transform: translateY(-1px);
+  }
+
+  .forgotPasswordLink {
+    margin-bottom: 18px;
+  }
+
+  .forgotLink {
+    font-size: 12px;
+  }
+
+  .btn,
+  .gmailBtn {
+    padding: 14px;
+    font-size: 15px;
+    min-height: 48px;
+    border-radius: 12px;
+  }
+
+  .divider {
+    margin: 12px 0;
+    font-size: 12px;
+  }
+
+  .signupLink {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  .errorMessage {
+    padding: 12px 14px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+  .rightSection {
+    padding: 20px 16px;
+    margin: 10px;
+    border-radius: 20px;
+  }
+
+  .logo {
+    margin-bottom: 16px;
+  }
+
+  .logoText {
+    font-size: 22px;
+  }
+
+  .title {
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .formGroup {
+    margin-bottom: 14px;
+  }
+
+  .label {
+    font-size: 12px;
+    margin-bottom: 5px;
   }
 
   .input {
     padding: 12px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+
+  .forgotPasswordLink {
+    margin-bottom: 16px;
+  }
+
+  .forgotLink {
+    font-size: 11px;
   }
 
   .btn,
   .gmailBtn {
     padding: 12px;
+    font-size: 14px;
+    min-height: 46px;
+    border-radius: 12px;
+  }
+
+  .divider {
+    margin: 10px 0;
+    font-size: 11px;
+  }
+
+  .signupLink {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .errorMessage {
+    padding: 10px 12px;
+    font-size: 11px;
+    margin-bottom: 14px;
+    border-radius: 12px;
   }
 }
 
 /* Landscape orientation on mobile */
 @media (max-width: 768px) and (orientation: landscape) {
-  .pageWrapper {
-    padding: 8px;
-  }
-
-  .container {
-    max-height: 100vh;
-    overflow-y: auto;
-  }
-
-  .leftSection {
-    padding: 16px;
-    min-height: auto;
-  }
-
   .rightSection {
-    padding: 20px;
+    padding: 16px 20px;
+    margin: 10px;
+    max-height: calc(100vh - 20px);
+    max-height: calc(-webkit-fill-available - 20px);
+  }
+
+  .logo {
+    margin-bottom: 12px;
+  }
+
+  .logoText {
+    font-size: 22px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 16px;
   }
 
   .formGroup {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+  }
+
+  .label {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .input {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .forgotPasswordLink {
+    margin-bottom: 14px;
+  }
+
+  .forgotLink {
+    font-size: 11px;
+  }
+
+  .btn,
+  .gmailBtn {
+    padding: 12px;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .divider {
+    margin: 10px 0;
+    font-size: 11px;
+  }
+
+  .signupLink {
+    margin-top: 10px;
+    font-size: 11px;
+  }
+
+  .errorMessage {
+    padding: 10px 12px;
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+}
+
+/* iPhone X and newer (with notch) */
+@media only screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3),
+       only screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3),
+       only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  .pageWrapper {
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Android devices with notch */
+@media screen and (max-width: 480px) {
+  .pageWrapper {
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
 }
 
@@ -464,9 +1070,63 @@
 @supports (-webkit-touch-callout: none) {
   .pageWrapper {
     min-height: -webkit-fill-available;
+    height: -webkit-fill-available;
+  }
+
+  .container {
+    max-height: -webkit-fill-available;
   }
 
   .input {
-    font-size: 16px !important; /* Force 16px on iOS */
+    font-size: 16px !important; /* Force 16px on iOS to prevent zoom */
+    transform: scale(1); /* Prevent zoom on focus */
+  }
+
+  .input:focus {
+    font-size: 16px !important;
+    transform: scale(1);
+  }
+
+  /* Prevent iOS bounce scrolling */
+  .rightSection {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Android specific fixes */
+@supports (-webkit-appearance: none) and (not (-webkit-touch-callout: none)) {
+  .pageWrapper {
+    min-height: 100dvh; /* Dynamic viewport height for Android */
+  }
+
+  .input {
+    font-size: 16px; /* Prevent zoom on Android */
+  }
+}
+
+/* iPad specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .pageWrapper {
+    padding: 24px;
+  }
+
+  .container {
+    max-width: 800px;
+  }
+
+  .rightSection {
+    padding: 50px 45px;
+  }
+
+  .leftSection {
+    padding: 45px;
+  }
+}
+
+/* iPad Pro and larger tablets */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .container {
+    max-width: 900px;
   }
 }

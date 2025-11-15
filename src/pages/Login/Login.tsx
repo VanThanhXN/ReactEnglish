@@ -187,18 +187,17 @@ const Login: React.FC = () => {
             <button type="submit" className={styles.btn} disabled={loading}>
               {loading ? "Đang đăng nhập..." : "Đăng nhập"}
             </button>
-          </form>
 
-          <div className={styles.divider}>
-            <span>Hoặc đăng nhập với</span>
-          </div>
+            <div className={styles.divider}>
+              <span>Hoặc đăng nhập với</span>
+            </div>
 
-          <button
-            type="button"
-            className={styles.gmailBtn}
-            onClick={handleGmailLogin}
-            disabled={loading}
-          >
+            <button
+              type="button"
+              className={styles.gmailBtn}
+              onClick={handleGmailLogin}
+              disabled={loading}
+            >
             <svg
               className={styles.gmailIcon}
               xmlns="http://www.w3.org/2000/svg"
@@ -224,12 +223,13 @@ const Login: React.FC = () => {
             Đăng nhập với Gmail
           </button>
 
-          <div className={styles.signupLink}>
-            Chưa có tài khoản?{" "}
-            <Link to="/register" className={styles.link}>
-              Đăng ký ngay
-            </Link>
-          </div>
+            <div className={styles.signupLink}>
+              Chưa có tài khoản?{" "}
+              <Link to="/register" className={styles.link}>
+                Đăng ký ngay
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>

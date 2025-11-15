@@ -13,18 +13,23 @@ function App() {
     location.pathname === "/forgot-password" ||
     location.pathname.startsWith("/reset-password") ||
     location.pathname === "/admin/login";
-  
+
   // Kiểm tra trang admin (trừ login) - layout được xử lý trong từng component
   const isAdminPage = location.pathname.startsWith("/admin");
   const isAdminLoginPage = location.pathname === "/admin/login";
 
+  // Kiểm tra trang exam take - ẩn footer
+  const isExamTakePage =
+    location.pathname.includes("/exams/") &&
+    location.pathname.includes("/take");
+
   return (
     <div className={styles.app}>
-      {!isAuthPage && !isAdminPage && <Header />}
+      {!isAuthPage && <Header />}
       <main className={styles.main}>
         <AppRouter />
       </main>
-      {!isAuthPage && !isAdminPage && <Footer />}
+      {!isAuthPage && !isExamTakePage && <Footer />}
     </div>
   );
 }

@@ -1,10 +1,19 @@
 .pageWrapper {
   min-height: 100vh;
+  min-height: -webkit-fill-available; /* iOS Safari */
   background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); /* Safe area for devices with notch */
+  overflow: hidden;
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.pageWrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .container {
@@ -15,6 +24,13 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .leftSection {
@@ -39,6 +55,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* Hide scrollbar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.rightSection::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .logo {
@@ -113,11 +136,16 @@
   -webkit-appearance: none;
   appearance: none;
   box-sizing: border-box;
+  outline: none;
 }
 
 .input:focus {
   border-color: #6a11cb;
   box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+  outline: none;
+}
+
+.input:focus-visible {
   outline: none;
 }
 
@@ -144,6 +172,15 @@
   align-items: center;
   justify-content: center;
   transition: color 0.2s;
+  outline: none;
+}
+
+.togglePassword:focus {
+  outline: none;
+}
+
+.togglePassword:focus-visible {
+  outline: none;
 }
 
 .togglePassword svg {
@@ -219,6 +256,15 @@
   margin-top: 8px;
   min-height: 44px;
   touch-action: manipulation;
+  outline: none;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: none;
 }
 
 .btn:hover:not(:disabled) {
@@ -252,7 +298,7 @@
 }
 
 .divider span {
-  background-color: white;
+  background-color: transparent;
   padding: 0 15px;
   position: relative;
   z-index: 2;
@@ -272,6 +318,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none;
+}
+
+.gmailBtn:focus {
+  outline: none;
+}
+
+.gmailBtn:focus-visible {
+  outline: none;
 }
 
 .gmailBtn:hover:not(:disabled) {
@@ -329,6 +384,13 @@
   font-weight: bold;
 }
 
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
 /* Tablet and below */
 @media (max-width: 1024px) {
   .pageWrapper {
@@ -338,77 +400,360 @@
   .container {
     max-width: 100%;
   }
+
+  .rightSection {
+    padding: 36px;
+  }
 }
 
 /* Mobile landscape and portrait */
 @media (max-width: 768px) {
   .pageWrapper {
-    padding: 12px;
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
+    padding: 0;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    max-height: -webkit-fill-available;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
   }
 
   .container {
     flex-direction: column;
-    margin: 0;
-    border-radius: 16px;
-    min-height: auto;
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
     max-height: 100vh;
-    overflow-y: auto;
+    max-height: -webkit-fill-available;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .leftSection {
-    padding: 24px 20px;
-    min-height: auto;
+    display: none;
   }
 
   .rightSection {
-    padding: 32px 24px;
-    max-height: none;
+    padding: 24px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 0;
+    max-height: 100%;
+    background: rgba(255, 255, 255, 0.99);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    margin: 12px;
+    border-radius: 28px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    position: relative;
   }
 
-  .leftTitle {
-    font-size: 22px;
+  .logo {
+    justify-content: flex-start;
     margin-bottom: 12px;
   }
 
-  .leftDescription {
-    font-size: 14px;
+  .logoIcon {
+    font-size: 24px;
+  }
+
+  .logoText {
+    font-size: 20px;
   }
 
   .title {
     font-size: 22px;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    color: #333;
   }
 
   .subtitle {
-    font-size: 14px;
-    margin-bottom: 20px;
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .formGroup {
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 4px;
+    color: #555;
+    font-weight: 500;
+    font-size: 12px;
   }
 
   .input {
-    padding: 14px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     font-size: 16px;
+    transition: all 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    outline: none;
+  }
+
+  .input:focus {
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+    outline: none;
+  }
+
+  .input:focus-visible {
+    outline: none;
+  }
+
+  .togglePassword {
+    right: 15px;
+    color: #666;
+    outline: none;
+  }
+
+  .togglePassword:focus {
+    outline: none;
+  }
+
+  .togglePassword:focus-visible {
+    outline: none;
+  }
+
+  .togglePassword:hover:not(:disabled) {
+    color: #6a11cb;
   }
 
   .btn {
-    padding: 14px;
-    font-size: 16px;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 4px;
+    margin-bottom: 0;
+    min-height: 42px;
+    touch-action: manipulation;
+    outline: none;
+    flex-shrink: 0;
+  }
+
+  .btn:focus {
+    outline: none;
+  }
+
+  .btn:focus-visible {
+    outline: none;
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+  }
+
+  .divider {
+    text-align: center;
+    margin: 16px 0;
+    padding: 0;
+    line-height: 1.2;
+    position: relative;
+    color: #999;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #ddd;
+    z-index: 1;
+  }
+
+  .divider span {
+    background-color: transparent;
+    padding: 0 12px;
+    line-height: 1;
+    position: relative;
+    z-index: 2;
   }
 
   .gmailBtn {
-    padding: 14px;
-    font-size: 16px;
+    background-color: white;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    flex-shrink: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .gmailBtn:focus {
+    outline: none;
+  }
+
+  .gmailBtn:focus-visible {
+    outline: none;
+  }
+
+  .gmailBtn:hover:not(:disabled) {
+    border-color: #6a11cb;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
 
   .loginLink {
-    font-size: 14px;
+    text-align: center;
     margin-top: 16px;
+    color: #666;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .link {
+    color: #6a11cb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+
+  .errorMessage {
+    color: #e74c3c;
+    font-size: 11px;
+    margin-top: 2px;
+    animation: shake 0.3s;
+    flex-shrink: 0;
+  }
+
+  .passwordStrength {
+    margin-top: 3px;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .strengthBar {
+    height: 2px;
+    background-color: #eee;
+    border-radius: 5px;
+    margin-top: 2px;
+    overflow: hidden;
   }
 }
 
 /* Small mobile devices */
 @media (max-width: 480px) {
+  .rightSection {
+    padding: 16px 12px;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .logoIcon {
+    font-size: 20px;
+  }
+
+  .logoText {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .formGroup {
+    margin-bottom: 8px;
+  }
+
+  .label {
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .input {
+    padding: 9px;
+    font-size: 16px;
+  }
+
+  .btn,
+  .gmailBtn {
+    padding: 9px;
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  .divider {
+    margin: 12px 0;
+    font-size: 11px;
+  }
+
+  .loginLink {
+    margin-top: 12px;
+    font-size: 11px;
+  }
+
+  .errorMessage {
+    font-size: 10px;
+    margin-top: 2px;
+  }
+
+  .passwordStrength {
+    font-size: 9px;
+    margin-top: 2px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
   .pageWrapper {
     padding: 8px;
   }
@@ -417,51 +762,116 @@
     border-radius: 12px;
   }
 
-  .leftSection {
-    padding: 20px 16px;
-    display: none;
-  }
-
   .rightSection {
-    padding: 24px 20px;
+    padding: 24px 16px;
   }
 
-  .title {
+  .logo {
+    margin-bottom: 14px;
+  }
+
+  .logoIcon {
+    font-size: 24px;
+  }
+
+  .logoText {
     font-size: 20px;
   }
 
+  .title {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+
+  .formGroup {
+    margin-bottom: 14px;
+  }
+
   .input {
-    padding: 12px;
+    padding: 11px;
+    font-size: 16px;
   }
 
   .btn,
   .gmailBtn {
-    padding: 12px;
+    padding: 11px;
+    font-size: 16px;
   }
 }
 
 /* Landscape orientation on mobile */
 @media (max-width: 768px) and (orientation: landscape) {
   .pageWrapper {
-    padding: 8px;
+    padding: 0;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    max-height: -webkit-fill-available;
+    align-items: center;
+    overflow: hidden;
   }
 
   .container {
+    height: 100vh;
+    height: -webkit-fill-available;
     max-height: 100vh;
-    overflow-y: auto;
+    max-height: -webkit-fill-available;
+    overflow: hidden;
   }
 
   .leftSection {
     padding: 16px;
     min-height: auto;
+    display: none; /* Hide in landscape on mobile */
   }
 
   .rightSection {
-    padding: 20px;
+    padding: 24px 20px;
   }
 
   .formGroup {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .input {
+    padding: 11px;
+  }
+
+  .btn,
+  .gmailBtn {
+    padding: 11px;
+  }
+}
+
+/* iPhone X and newer (with notch) */
+@media only screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3),
+       only screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3),
+       only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  .pageWrapper {
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Android devices with notch */
+@media screen and (max-width: 480px) {
+  .pageWrapper {
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
 }
 
@@ -469,10 +879,64 @@
 @supports (-webkit-touch-callout: none) {
   .pageWrapper {
     min-height: -webkit-fill-available;
+    height: -webkit-fill-available;
+  }
+
+  .container {
+    max-height: -webkit-fill-available;
   }
 
   .input {
+    font-size: 16px !important; /* Force 16px on iOS to prevent zoom */
+    transform: scale(1); /* Prevent zoom on focus */
+  }
+
+  .input:focus {
     font-size: 16px !important;
+    transform: scale(1);
+  }
+
+  /* Prevent iOS bounce scrolling */
+  .rightSection {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Android specific fixes */
+@supports (-webkit-appearance: none) and (not (-webkit-touch-callout: none)) {
+  .pageWrapper {
+    min-height: 100dvh; /* Dynamic viewport height for Android */
+  }
+
+  .input {
+    font-size: 16px; /* Prevent zoom on Android */
+  }
+}
+
+/* iPad specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .pageWrapper {
+    padding: 24px;
+  }
+
+  .container {
+    max-width: 800px;
+  }
+
+  .rightSection {
+    padding: 40px 36px;
+  }
+
+  .leftSection {
+    padding: 40px;
+  }
+}
+
+/* iPad Pro and larger tablets */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .container {
+    max-width: 900px;
   }
 }
 

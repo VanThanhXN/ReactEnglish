@@ -1,384 +1,297 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { getUser, isAuthenticated } from "../../../utils/storage";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getUser, isAuthenticated, clearAuth } from "../../../utils/storage";
 import { logout } from "../../../services/authService";
 import type { User } from "../../../types/api";
 import styles from "./Header.module.css";
 
 const Header: React.FC = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const [menuOpenedFrom, setMenuOpenedFrom] = useState<
-    "hamburger" | "user" | null
-  >(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
   const user: User | null = getUser();
   const authenticated = isAuthenticated();
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const hamburgerRef = useRef<HTMLButtonElement>(null);
-  const userMenuRef = useRef<HTMLDivElement>(null);
 
+  // Đóng menu khi route thay đổi
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(target) &&
-        hamburgerRef.current &&
-        !hamburgerRef.current.contains(target) &&
-        userMenuRef.current &&
-        !userMenuRef.current.contains(target)
-      ) {
-        setShowUserMenu(false);
-        setMenuOpenedFrom(null);
-      }
-    };
+    setMobileMenuOpen(false);
+    setUserMenuOpen(false);
+  }, [location.pathname]);
 
-    if (showUserMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
+  const handleLogout = async () => {
+    try {
+      await logout();
+      clearAuth();
+      setUserMenuOpen(false);
+      setMobileMenuOpen(false);
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      clearAuth();
+      navigate("/login");
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showUserMenu]);
-
-  const handleCloseMenu = () => {
-    setShowUserMenu(false);
-    setMenuOpenedFrom(null);
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-    handleCloseMenu();
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    // Blur button khi đóng menu để loại bỏ focus state
+    if (mobileMenuOpen && mobileMenuButtonRef.current) {
+      setTimeout(() => {
+        mobileMenuButtonRef.current?.blur();
+      }, 100);
+    }
   };
+
+  const toggleUserMenu = () => {
+    setUserMenuOpen(!userMenuOpen);
+  };
+
+  const closeMenus = () => {
+    setMobileMenuOpen(false);
+    setUserMenuOpen(false);
+    // Blur button khi đóng menu
+    if (mobileMenuButtonRef.current) {
+      setTimeout(() => {
+        mobileMenuButtonRef.current?.blur();
+      }, 100);
+    }
+  };
+
+  const isActive = (path: string) => {
+    if (path === "/dashboard") {
+      return location.pathname === "/dashboard" || location.pathname === "/";
+    }
+    return (
+      location.pathname === path || location.pathname.startsWith(path + "/")
+    );
+  };
+
+  const navLinks = [
+    { path: "/dashboard", label: "Trang chủ" },
+    { path: "/courses", label: "Khóa học" },
+    { path: "/exams", label: "Đề thi" },
+    { path: "/flatcar", label: "Flashcard" },
+    { path: "/progress", label: "Tiến độ" },
+    { path: "/blog", label: "Bài viết" },
+  ];
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div className={styles.leftSection}>
-          {authenticated && (
-            <button
-              ref={hamburgerRef}
-              className={styles.hamburger}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (showUserMenu && menuOpenedFrom === "hamburger") {
-                  setShowUserMenu(false);
-                  setMenuOpenedFrom(null);
-                } else {
-                  setMenuOpenedFrom("hamburger");
-                  setShowUserMenu(true);
-                }
-              }}
-              aria-label="Menu"
-              aria-expanded={showUserMenu && menuOpenedFrom === "hamburger"}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-          )}
-          <Link to="/dashboard" className={styles.logo}>
-            TT ENGLISH
-          </Link>
-          {authenticated && (
-            <nav className={styles.nav}>
-              <Link to="/dashboard" className={styles.navLink}>
-                Trang chủ
-              </Link>
-              <Link to="/courses" className={styles.navLink}>
-                Khóa học
-              </Link>
-              <Link to="/practice" className={styles.navLink}>
-                Luyện tập
-              </Link>
-              <Link to="/progress" className={styles.navLink}>
-                Tiến độ
-              </Link>
-              <Link to="/exams" className={styles.navLink}>
-                Đề thi
-              </Link>
-              <Link to="/blog" className={styles.navLink}>
-                Bài viết
-              </Link>
-              <Link to="/flatcar" className={styles.navLink}>
-                Flashcard
-              </Link>
-            </nav>
-          )}
-        </div>
+        {/* Mobile Menu Button - Hiển thị trước logo trên mobile */}
+        <button
+          ref={mobileMenuButtonRef}
+          className={styles.mobileMenuButton}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            {mobileMenuOpen ? (
+              <path d="M18 6L6 18M6 6l12 12" />
+            ) : (
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            )}
+          </svg>
+        </button>
 
+        {/* Logo */}
+        <Link to="/dashboard" className={styles.logo}>
+          TT ENGLISH
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className={styles.nav}>
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`${styles.navLink} ${isActive(link.path) ? styles.active : ""}`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Right Section */}
         <div className={styles.rightSection}>
-          {authenticated ? (
-            <div className={styles.userSection}>
-              <div
-                ref={userMenuRef}
-                className={styles.userMenu}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (showUserMenu && menuOpenedFrom === "user") {
-                    setShowUserMenu(false);
-                    setMenuOpenedFrom(null);
-                  } else {
-                    setMenuOpenedFrom("user");
-                    setShowUserMenu(true);
-                  }
-                }}
-              >
-                <div className={styles.userAvatar}>
-                  {user?.name?.charAt(0).toUpperCase() || "U"}
-                </div>
-                <span className={styles.userName}>
-                  {user?.name || "Người dùng"}
-                </span>
-                <svg
-                  className={`${styles.chevron} ${showUserMenu ? styles.chevronOpen : ""}`}
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </div>
-            </div>
-          ) : (
+          {/* Auth Buttons (Desktop) - Chỉ hiển thị Login */}
+          {!authenticated && (
             <div className={styles.authButtons}>
               <Link to="/login" className={styles.loginBtn}>
                 Đăng nhập
               </Link>
-              <Link to="/register" className={styles.registerBtn}>
-                Đăng ký
-              </Link>
+            </div>
+          )}
+
+          {/* User Menu (Desktop) */}
+          {authenticated && user && (
+            <div className={styles.userSection}>
+              <button
+                className={styles.userButton}
+                onClick={toggleUserMenu}
+                aria-label="User menu"
+              >
+                <div className={styles.userAvatar}>
+                  {user.name?.charAt(0).toUpperCase() || "U"}
+                </div>
+                <span className={styles.userName}>{user.name || "User"}</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className={`${styles.chevronIcon} ${userMenuOpen ? styles.rotated : ""}`}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              {userMenuOpen && (
+                <>
+                  <div className={styles.overlay} onClick={closeMenus} />
+                  <div className={styles.userDropdown}>
+                    <Link
+                      to="/profile"
+                      className={styles.dropdownItem}
+                      onClick={closeMenus}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                      </svg>
+                      <span>Hồ sơ</span>
+                    </Link>
+                    <Link
+                      to="/settings"
+                      className={styles.dropdownItem}
+                      onClick={closeMenus}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m8.48 0l-4.24-4.24M1 12h6m6 0h6" />
+                      </svg>
+                      <span>Cài đặt</span>
+                    </Link>
+                    <div className={styles.dropdownDivider} />
+                    <button
+                      className={styles.dropdownItem}
+                      onClick={handleLogout}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                      </svg>
+                      <span>Đăng xuất</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Mobile Avatar - Chỉ hiển thị hình ảnh */}
+          {authenticated && user && (
+            <div className={styles.mobileAvatarOnly}>
+              <div className={styles.userAvatar}>
+                {user.name?.charAt(0).toUpperCase() || "U"}
+              </div>
             </div>
           )}
         </div>
-
-        {/* Dropdown menu - đặt ở level container để dễ điều chỉnh vị trí */}
-        {authenticated && showUserMenu && (
-          <div
-            className={`${styles.dropdown} ${
-              menuOpenedFrom === "hamburger"
-                ? styles.dropdownLeft
-                : styles.dropdownRight
-            }`}
-            ref={dropdownRef}
-          >
-            <div className={styles.dropdownItem}>
-              <div className={styles.userInfo}>
-                <div className={styles.userInfoName}>{user?.name}</div>
-                <div className={styles.userInfoEmail}>{user?.email}</div>
-              </div>
-            </div>
-            <div className={styles.dropdownDivider}></div>
-
-            {/* Mobile Navigation Links - chỉ hiển thị khi mở từ hamburger hoặc trên mobile */}
-            <div
-              className={`${styles.mobileNav} ${menuOpenedFrom === "hamburger" ? styles.mobileNavVisible : ""}`}
-            >
-              <Link
-                to="/dashboard"
-                className={styles.dropdownItem}
-                onClick={handleCloseMenu}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                Trang chủ
-              </Link>
-              <Link
-                to="/courses"
-                className={styles.dropdownItem}
-                onClick={handleCloseMenu}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 1-3-3V7a3 3 0 0 0-3-3H2z"></path>
-                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3 3h7V7a3 3 0 0 0-3-3z"></path>
-                </svg>
-                Khóa học
-              </Link>
-              <Link
-                to="/practice"
-                className={styles.dropdownItem}
-                onClick={handleCloseMenu}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                Luyện tập
-              </Link>
-              <Link
-                to="/progress"
-                className={styles.dropdownItem}
-                onClick={handleCloseMenu}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                </svg>
-                Tiến độ
-              </Link>
-              <Link
-                to="/exams"
-                className={styles.dropdownItem}
-                onClick={handleCloseMenu}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                </svg>
-                Đề thi
-              </Link>
-              <Link
-                to="/blog"
-                className={styles.dropdownItem}
-                onClick={handleCloseMenu}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
-                Bài viết
-              </Link>
-              <Link
-                to="/flatcar"
-                className={styles.dropdownItem}
-                onClick={handleCloseMenu}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="3" y1="9" x2="21" y2="9"></line>
-                  <line x1="9" y1="21" x2="9" y2="9"></line>
-                </svg>
-                Flashcard
-              </Link>
-              <div className={styles.dropdownDivider}></div>
-            </div>
-
-            <Link
-              to="/profile"
-              className={styles.dropdownItem}
-              onClick={handleCloseMenu}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-              Hồ sơ
-            </Link>
-            <Link
-              to="/settings"
-              className={styles.dropdownItem}
-              onClick={handleCloseMenu}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
-              </svg>
-              Cài đặt
-            </Link>
-            <div className={styles.dropdownDivider}></div>
-            <button className={styles.dropdownItem} onClick={handleLogout}>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-              Đăng xuất
-            </button>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+        <>
+          <div className={styles.mobileOverlay} onClick={closeMenus} />
+          <div className={styles.mobileNav}>
+            {/* Navigation Links */}
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`${styles.mobileNavLink} ${isActive(link.path) ? styles.active : ""}`}
+                onClick={closeMenus}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {/* Auth Buttons (Mobile) - Chỉ hiển thị Login */}
+            {!authenticated && (
+              <div className={styles.mobileAuthButtons}>
+                <Link
+                  to="/login"
+                  className={styles.mobileLoginBtn}
+                  onClick={closeMenus}
+                >
+                  Đăng nhập
+                </Link>
+              </div>
+            )}
+
+            {/* User Actions (Mobile) - Chỉ hiển thị actions, không có avatar/name */}
+            {authenticated && user && (
+              <div className={styles.mobileUserActions}>
+                <Link
+                  to="/profile"
+                  className={styles.mobileUserAction}
+                  onClick={closeMenus}
+                >
+                  Hồ sơ
+                </Link>
+                <Link
+                  to="/settings"
+                  className={styles.mobileUserAction}
+                  onClick={closeMenus}
+                >
+                  Cài đặt
+                </Link>
+                <button
+                  className={styles.mobileUserAction}
+                  onClick={handleLogout}
+                >
+                  Đăng xuất
+                </button>
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </header>
   );
 };
