@@ -1,9 +1,8 @@
 // API Configuration
-// Sử dụng proxy trong development để tránh CORS
-// Vite proxy sẽ forward /api/* đến http://localhost:3000/api/*
-// Trong development, sử dụng relative path để dùng proxy
-// Trong production, có thể cần thay đổi thành full URL
-export const API_BASE_URL = "/api/v1"; // Sử dụng proxy từ Vite để tránh CORS
+// Development: Sử dụng relative path để dùng Vite proxy
+// Production: Sử dụng VITE_API_BASE_URL environment variable hoặc fallback về relative path
+// Nếu không có VITE_API_BASE_URL, sẽ dùng relative path (cho dev với proxy)
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api/v1";
 
 export const API_ENDPOINTS = {
   LOGIN: "/login",

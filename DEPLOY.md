@@ -25,11 +25,14 @@
    - Output Directory: `dist` (mặc định)
    - Install Command: `npm install` (mặc định)
 
-3. **Cấu hình Environment Variables (nếu cần):**
-   - Vào Settings > Environment Variables
-   - Thêm các biến môi trường cần thiết:
-     - `VITE_API_BASE_URL`: URL của backend API
-     - Các biến khác nếu cần
+3. **Cấu hình Environment Variables (QUAN TRỌNG):**
+   - Vào Settings > Environment Variables trong Vercel project
+   - Thêm biến môi trường:
+     - **Key**: `VITE_API_BASE_URL`
+     - **Value**: URL đầy đủ của backend API (ví dụ: `https://your-backend-api.com/api/v1`)
+     - **Environment**: Production, Preview, Development (chọn tất cả nếu muốn)
+   - **Lưu ý**: Nếu không set biến này, app sẽ cố gắng gọi API tới domain Vercel (sẽ lỗi)
+   - Sau khi thêm environment variable, cần **redeploy** để áp dụng thay đổi
 
 4. **Deploy:**
    - Click "Deploy"
