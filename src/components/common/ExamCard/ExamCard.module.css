@@ -9,7 +9,7 @@
   flex-direction: column;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  min-height: 320px;
+  min-height: 280px;
   position: relative;
 }
 
@@ -53,14 +53,11 @@
 }
 
 .badges {
-  position: absolute;
-  top: 12px;
-  right: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  z-index: 2;
+  margin-bottom: 12px;
 }
 
 .badgeNew {

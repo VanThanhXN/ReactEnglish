@@ -4,9 +4,11 @@ import { getUser, isAuthenticated } from "../../../utils/storage";
 import {
   getAllUsers,
   createUser,
+  deleteUser,
   type CreateUserData,
 } from "../../../services/adminService";
 import AdminLayout from "../../../components/admin/Layout/Layout";
+import Pagination from "../../../components/common/Pagination/Pagination";
 import type { User } from "../../../types/api";
 import styles from "./Users.module.css";
 
@@ -19,6 +21,11 @@ const AdminUsers: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [itemsPerPage] = useState(8);
   const [formData, setFormData] = useState<CreateUserData>({
     name: "",
     email: "",
@@ -29,16 +36,6 @@ const AdminUsers: React.FC = () => {
   const lastFetchTime = useRef<number>(0);
 
   useEffect(() => {
-    // Kiểm tra authentication và role
-    if (!isAuthenticated()) {
-      navigate("/admin/login");
-      return;
-    }
-
-    if (currentUser?.role !== "admin") {
-      navigate("/dashboard");
-      return;
-    }
 
     // Lấy danh sách users - chỉ load 1 lần khi component mount (khi refresh trình duyệt)
     fetchUsers(0);
@@ -51,7 +48,6 @@ const AdminUsers: React.FC = () => {
       const now = Date.now();
       const timeSinceLastFetch = now - lastFetchTime.current;
       if (timeSinceLastFetch < 2000 && retryCount === 0) {
-        console.log("⏳ Đợi một chút trước khi gửi request tiếp theo...");
         return;
       }
       lastFetchTime.current = now;
@@ -160,6 +156,74 @@ const AdminUsers: React.FC = () => {
     if (createError) setCreateError("");
   };
 
+  const handleDeleteClick = (userId: string) => {
+    setDeleteUserId(userId);
+    setDeleteError("");
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteUserId) return;
+
+    setDeleting(true);
+    setDeleteError("");
+
+    try {
+      await deleteUser(deleteUserId);
+      
+      // Xóa user khỏi danh sách
+      setUsers(users.filter((user) => user.id !== deleteUserId));
+      
+      // Đóng modal
+      setDeleteUserId(null);
+      setDeleteError("");
+      
+      // Nếu trang hiện tại trống sau khi xóa, quay về trang trước
+      if (currentUsers.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    } catch (err: any) {
+      console.error("❌ Lỗi khi xóa user:", err);
+      setDeleteError(err.message || "Có lỗi xảy ra khi xóa user");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteUserId(null);
+    setDeleteError("");
+  };
+
+  // Tính toán phân trang
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentUsers = users.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      handlePageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      handlePageChange(currentPage + 1);
+    }
+  };
+
+  // Reset về trang 1 khi có user mới
+  useEffect(() => {
+    if (users.length > 0 && currentPage > Math.ceil(users.length / itemsPerPage)) {
+      setCurrentPage(1);
+    }
+  }, [users.length, currentPage, itemsPerPage]);
+
   if (!currentUser || currentUser.role !== "admin") {
     return null;
   }
@@ -211,20 +275,20 @@ const AdminUsers: React.FC = () => {
                   <th>Email</th>
                   <th>Vai trò</th>
                   <th>Trạng thái</th>
-                  <th>ID</th>
+                  <th>Hành động</th>
                 </tr>
               </thead>
               <tbody>
                 {users.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className={styles.empty}>
+                    <td colSpan={7} className={styles.empty}>
                       Không có người dùng nào
                     </td>
                   </tr>
                 ) : (
-                  users.map((user, index) => (
+                  currentUsers.map((user, index) => (
                     <tr key={user.id}>
-                      <td>{index + 1}</td>
+                      <td>{startIndex + index + 1}</td>
                       <td>
                         <div className={styles.userNameCell}>
                           {user.photo ? (
@@ -256,13 +320,22 @@ const AdminUsers: React.FC = () => {
                           {user.isActive ? "Hoạt động" : "Không hoạt động"}
                         </span>
                       </td>
-                      <td className={styles.idCell}>
-                        <Link
-                          to={`/admin/users/${user.id}`}
-                          className={styles.viewLink}
-                        >
-                          Xem chi tiết
-                        </Link>
+                      <td className={styles.actionsCell}>
+                        <div className={styles.actionButtons}>
+                          <Link
+                            to={`/admin/users/${user.id}`}
+                            className={styles.viewLink}
+                          >
+                            Xem
+                          </Link>
+                          <button
+                            onClick={() => handleDeleteClick(user.id)}
+                            className={styles.deleteButton}
+                            disabled={deleting}
+                          >
+                            Xóa
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -273,9 +346,17 @@ const AdminUsers: React.FC = () => {
         )}
 
         {!loading && users.length > 0 && (
-          <div className={styles.footer}>
-            <p>Tổng số người dùng: {users.length}</p>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            disabled={loading}
+            showInfo={true}
+            totalItems={users.length}
+            itemsPerPage={itemsPerPage}
+            startIndex={startIndex}
+            endIndex={endIndex}
+          />
         )}
 
         {/* Modal tạo user mới */}
@@ -416,6 +497,75 @@ const AdminUsers: React.FC = () => {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal xác nhận xóa user */}
+        {deleteUserId && (
+          <div
+            className={styles.modalOverlay}
+            onClick={handleDeleteCancel}
+          >
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.modalHeader}>
+                <h2>Xác nhận xóa người dùng</h2>
+                <button
+                  className={styles.modalClose}
+                  onClick={handleDeleteCancel}
+                  disabled={deleting}
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+
+              <div className={styles.modalBody}>
+                {deleteError && (
+                  <div className={styles.modalError}>{deleteError}</div>
+                )}
+                <p>
+                  Bạn có chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác.
+                </p>
+                {deleteUserId && (
+                  <div className={styles.deleteUserInfo}>
+                    <strong>
+                      {users.find((u) => u.id === deleteUserId)?.name}
+                    </strong>
+                    <span>
+                      ({users.find((u) => u.id === deleteUserId)?.email})
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.modalActions}>
+                <button
+                  type="button"
+                  className={styles.cancelButton}
+                  onClick={handleDeleteCancel}
+                  disabled={deleting}
+                >
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  className={styles.deleteConfirmButton}
+                  onClick={handleDeleteConfirm}
+                  disabled={deleting}
+                >
+                  {deleting ? "Đang xóa..." : "Xóa"}
+                </button>
+              </div>
             </div>
           </div>
         )}

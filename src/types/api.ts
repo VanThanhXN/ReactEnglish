@@ -8,11 +8,12 @@ export interface User {
   name: string;
   email: string;
   photo: string | null;
+  passwordConfirm?: string | null;
   role: string;
   isActive: boolean;
   passwordChangedAt: string | null;
-  passwordResetToken?: string;
-  passwordResetExpires?: string;
+  passwordResetToken?: string | null;
+  passwordResetExpires?: string | null;
 }
 
 // Login request
@@ -107,5 +108,41 @@ export interface ApiError {
   message?: string;
   error?: string;
   data?: any;
+}
+
+// Generic API Response
+export interface ApiResponse<T = any> {
+  status: string;
+  message?: string;
+  data?: T;
+}
+
+// Exam interfaces (re-export from adminService for userService)
+export interface Exam {
+  id: number | string;
+  title: string;
+  description?: string;
+  duration?: number;
+  totalMarks?: number;
+  totalQuestions?: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  [key: string]: any;
+}
+
+export interface GetAllExamsResponse {
+  status: string;
+  results?: number;
+  data?: {
+    exams?: Exam[];
+  } | Exam[];
+  message?: string;
+}
+
+export interface GetExamByIdResponse {
+  status: string;
+  data?: any;
+  message?: string;
 }
 

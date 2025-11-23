@@ -28,16 +28,6 @@ apiClient.interceptors.request.use(
     const token = getToken();
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
-      // Debug: Log token để kiểm tra (chỉ trong development)
-      if (process.env.NODE_ENV === "development") {
-        console.log("🔑 Token được gửi:", token.substring(0, 20) + "...");
-        console.log("📡 Request URL:", config.url);
-      }
-    } else {
-      // Debug: Log khi không có token
-      if (process.env.NODE_ENV === "development") {
-        console.warn("⚠️ Không có token để gửi cho request:", config.url);
-      }
     }
 
     // Nếu là FormData, không set Content-Type để browser tự set với boundary

@@ -27,19 +27,9 @@ const ExamCard: React.FC<ExamCardProps> = ({ exam }) => {
     return diffDays <= 7;
   };
 
-  // Default image nếu không có
-  const cardImage = exam.image || "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80";
-
   return (
     <Link to={`/exams/${exam.id}`} className={styles.card}>
-      <div className={styles.imageWrapper}>
-        <img
-          src={cardImage}
-          alt={exam.title}
-          className={styles.image}
-          loading="lazy"
-        />
-        <div className={styles.imageOverlay} />
+      <div className={styles.content}>
         <div className={styles.badges}>
           {isNew() && <div className={styles.badgeNew}>Mới</div>}
           {exam.isActive !== false ? (
@@ -48,9 +38,6 @@ const ExamCard: React.FC<ExamCardProps> = ({ exam }) => {
             <div className={styles.badgeInactive}>Đã đóng</div>
           )}
         </div>
-      </div>
-
-      <div className={styles.content}>
         <h3 className={styles.title}>{exam.title}</h3>
         <p className={styles.description}>{exam.description}</p>
 

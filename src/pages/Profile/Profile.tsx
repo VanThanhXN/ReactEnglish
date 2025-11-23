@@ -10,6 +10,7 @@ const Profile: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    photo: "",
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -27,6 +28,7 @@ const Profile: React.FC = () => {
       setFormData({
         name: user.name || "",
         email: user.email || "",
+        photo: user.photo || "",
       });
       if (user.photo) {
         setPhotoPreview(user.photo);
@@ -100,6 +102,7 @@ const Profile: React.FC = () => {
     const newErrors = {
       name: "",
       email: "",
+      photo: "",
     };
 
     let isValid = true;
@@ -169,6 +172,7 @@ const Profile: React.FC = () => {
       setFormData({
         name: user.name || "",
         email: user.email || "",
+        photo: user.photo || "",
       });
       if (user.photo) {
         setPhotoPreview(user.photo);

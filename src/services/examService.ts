@@ -70,9 +70,66 @@ export interface ExamPackageDetail extends ExamPackage {
  * @returns GetExamPackagesResponse với danh sách exam packages
  */
 export const getExamPackages = async (): Promise<GetExamPackagesResponse> => {
-  const response =
-    await apiClient.get<GetExamPackagesResponse>("/get-all-exam");
-  return response.data;
+  try {
+    const response = await apiClient.get<GetExamPackagesResponse | any>("/exam/get-all-exam");
+    
+    // Xử lý response - API có thể trả về format khác nhau
+    if (response.data) {
+      // Nếu response.data đã có cấu trúc {success, data, message}
+      if (response.data.success !== undefined && response.data.data) {
+        // Kiểm tra nếu data là mảng
+        if (Array.isArray(response.data.data)) {
+          return response.data as GetExamPackagesResponse;
+        }
+        // Nếu data có exams array
+        if (response.data.data.exams && Array.isArray(response.data.data.exams)) {
+          return {
+            success: response.data.success,
+            data: response.data.data.exams,
+            message: response.data.message,
+          };
+        }
+      }
+      // Nếu response.data là mảng trực tiếp
+      if (Array.isArray(response.data)) {
+        return {
+          success: true,
+          data: response.data,
+        };
+      }
+      // Nếu response.data là object có data.exams
+      if (response.data.data && Array.isArray(response.data.data)) {
+        return {
+          success: true,
+          data: response.data.data,
+        };
+      }
+      // Nếu response.data là object có exams array
+      if (response.data.exams && Array.isArray(response.data.exams)) {
+        return {
+          success: true,
+          data: response.data.exams,
+        };
+      }
+    }
+    
+    // Fallback: trả về response.data nếu không match format nào
+    return response.data as GetExamPackagesResponse;
+  } catch (error: any) {
+    console.error("Error fetching exam packages:", error);
+    // Xử lý lỗi và trả về response lỗi
+    if (error.response) {
+      const errorMessage =
+        error.response.data?.message ||
+        error.response.data?.error ||
+        `Lỗi ${error.response.status}: ${error.response.statusText}`;
+      throw new Error(errorMessage);
+    } else if (error.request) {
+      throw new Error("Không thể kết nối đến server. Vui lòng kiểm tra server có đang chạy không.");
+    } else {
+      throw new Error(error.message || "Có lỗi xảy ra khi lấy danh sách đề thi");
+    }
+  }
 };
 
 /**
@@ -83,8 +140,41 @@ export const getExamPackages = async (): Promise<GetExamPackagesResponse> => {
 export const getExamPackageById = async (
   examId: number
 ): Promise<GetExamPackageByIdResponse> => {
-  const response = await apiClient.get<GetExamPackageByIdResponse>(
-    `/exam/${examId}`
-  );
-  return response.data;
+  try {
+    const response = await apiClient.get<GetExamPackageByIdResponse | any>(
+      `/exam/exam-by-id/${examId}`
+    );
+    
+    // Xử lý response - API có thể trả về format khác nhau
+    if (response.data) {
+      // Nếu response.data đã có cấu trúc {success, data, message}
+      if (response.data.success !== undefined) {
+        return response.data as GetExamPackageByIdResponse;
+      }
+      // Nếu response.data là exam object trực tiếp
+      if (response.data.id && response.data.title) {
+        return {
+          success: true,
+          data: response.data as ExamPackageDetail,
+        };
+      }
+    }
+    
+    // Fallback: trả về response.data nếu không match format nào
+    return response.data as GetExamPackageByIdResponse;
+  } catch (error: any) {
+    console.error("Error fetching exam package:", error);
+    // Xử lý lỗi
+    if (error.response) {
+      const errorMessage =
+        error.response.data?.message ||
+        error.response.data?.error ||
+        `Lỗi ${error.response.status}: ${error.response.statusText}`;
+      throw new Error(errorMessage);
+    } else if (error.request) {
+      throw new Error("Không thể kết nối đến server. Vui lòng kiểm tra server có đang chạy không.");
+    } else {
+      throw new Error(error.message || "Có lỗi xảy ra khi lấy thông tin đề thi");
+    }
+  }
 };

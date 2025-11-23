@@ -70,16 +70,6 @@ const AdminLogin: React.FC = () => {
 
         // CHỈ redirect nếu role là admin
         if (user.role === "admin") {
-          // Token đã được lưu trong function login() rồi
-          // Kiểm tra token đã được lưu chưa (debug)
-          const savedToken = getToken();
-          if (process.env.NODE_ENV === "development") {
-            console.log(
-              "✅ Admin login thành công! Token đã được lưu:",
-              savedToken ? "Có" : "Không"
-            );
-          }
-
           // Redirect đến admin dashboard
           navigate("/admin/dashboard", { replace: true });
           return; // Dừng ở đây, không chạy code phía dưới

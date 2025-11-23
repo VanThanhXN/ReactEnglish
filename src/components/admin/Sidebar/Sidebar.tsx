@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../../../utils/storage";
 import { logout } from "../../../services/authService";
 import type { User } from "../../../types/api";
 import styles from "./Sidebar.module.css";
 
-const AdminSidebar: React.FC = () => {
+interface AdminSidebarProps {
+  onNavigate?: () => void;
+  onToggle?: () => void;
+}
+
+const AdminSidebar: React.FC<AdminSidebarProps> = ({ onNavigate, onToggle }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user: User | null = getUser();
@@ -101,6 +106,12 @@ const AdminSidebar: React.FC = () => {
               key={item.path}
               to={item.path}
               className={`${styles.navItem} ${isActive ? styles.navItemActive : ""}`}
+              onClick={() => {
+                // Đóng sidebar khi click vào menu item trên mobile
+                if (window.innerWidth <= 768 && onNavigate) {
+                  onNavigate();
+                }
+              }}
             >
               <span className={styles.navIcon}>{item.icon}</span>
               <span className={styles.navLabel}>{item.label}</span>

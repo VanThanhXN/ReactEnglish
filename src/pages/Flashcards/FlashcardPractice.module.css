@@ -1,55 +1,117 @@
+/* Container */
 .container {
-  padding: 90px 24px 60px;
-  max-width: 800px;
-  margin: 0 auto;
-  min-height: calc(100vh - 70px);
+  min-height: 100vh;
+  background: #f8fafc;
+  outline: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
+/* Dark Blue Header */
 .header {
-  width: 100%;
-  margin-bottom: 40px;
+  background: linear-gradient(90deg, #1d2d4c 0%, #1b2642 50%, #201f46 100%);
+  color: #ffffff;
+  padding: 24px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.backButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-4px);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.progressText {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  min-width: 70px;
 }
 
 .progressBar {
-  width: 100%;
-  height: 8px;
-  background: #e2e8f0;
-  border-radius: 4px;
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
   overflow: hidden;
-  margin-bottom: 12px;
+  min-width: 200px;
+  max-width: 500px;
 }
 
 .progressFill {
   height: 100%;
-  background: #2563eb;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 3px;
   transition: width 0.3s ease;
 }
 
-.progressText {
-  text-align: center;
-  font-size: 16px;
-  color: #64748b;
-  font-weight: 600;
-  margin: 0;
+/* Main Content Area */
+.main {
+  flex: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
 }
 
-.cardContainer {
+/* Card Wrapper */
+.cardWrapper {
+  perspective: 1500px;
   width: 100%;
-  max-width: 600px;
-  height: 400px;
-  perspective: 1000px;
-  margin-bottom: 40px;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .card {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 420px;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.6s;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
   cursor: pointer;
 }
 
@@ -57,142 +119,654 @@
   transform: rotateY(180deg);
 }
 
-.cardFront,
-.cardBack {
+.cardFace {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
   border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-.cardFront {
-  background: #ffffff;
-  color: #000000;
-  border: 2px solid #e5e7eb;
+  padding: clamp(24px, 5vw, 48px);
 }
 
 .cardBack {
-  background: #ffffff;
-  color: #000000;
   transform: rotateY(180deg);
-  border: 2px solid #e5e7eb;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
 }
 
 .cardContent {
-  padding: 40px;
   text-align: center;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-.typeBadge {
-  display: inline-block;
-  background: #f3f4f6;
-  color: #000000;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
+.cardLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.cardMainText {
+  font-size: clamp(28px, 6vw, 48px);
   font-weight: 700;
+  color: #1e293b;
   margin-bottom: 20px;
-  border: 1px solid #d1d5db;
+  line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
-.wordText {
-  font-size: 48px;
-  font-weight: 800;
-  color: #000000;
-  margin: 20px 0;
-  letter-spacing: -0.5px;
-}
-
-.pronunciation {
-  font-size: 20px;
-  color: #374151;
-  font-weight: 500;
-  margin: 16px 0;
-}
-
-.flipHint {
-  font-size: 14px;
-  color: #6b7280;
-  font-weight: 500;
-  margin-top: 32px;
-}
-
-.meaning,
-.example,
-.note {
-  margin-bottom: 24px;
+.example {
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  font-size: 15px;
+  color: #475569;
+  line-height: 1.6;
   text-align: left;
 }
 
-.meaningLabel,
-.exampleLabel,
-.noteLabel {
+.example strong {
+  color: #1e293b;
   display: block;
+  margin-bottom: 6px;
   font-size: 14px;
-  font-weight: 700;
-  color: #000000;
-  margin-bottom: 8px;
 }
 
-.meaningText,
-.exampleText,
-.noteText {
-  display: block;
-  font-size: 18px;
-  color: #000000;
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-.controls {
+.flipHint {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.flipHint svg {
+  opacity: 0.6;
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .navButton {
-  padding: 12px 32px;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 110px;
+  justify-content: center;
+}
+
+.navButton:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.navButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.cardCounter {
+  padding: 10px 20px;
   background: #f1f5f9;
-  color: #1e293b;
-  border: 2px solid #cbd5e1;
   border-radius: 10px;
   font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  min-width: 90px;
+  text-align: center;
+}
+
+/* Keyboard Hints */
+.hints {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hints span {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+  padding: 6px 12px;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+/* Loading & Error */
+.loading,
+.error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-size: 18px;
+  color: #64748b;
+  padding: 24px;
+  text-align: center;
+}
+
+.error button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+.error button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .main {
+    padding: 32px 20px;
+  }
+
+  .cardWrapper {
+    max-width: 600px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 0;
+  }
+
+  .headerContent {
+    padding: 0 16px;
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .progressText {
+    font-size: 14px;
+    min-width: 60px;
+  }
+
+  .progressBar {
+    min-width: 150px;
+  }
+
+  .main {
+    padding: 24px 16px;
+    gap: 24px;
+  }
+
+  .cardWrapper {
+    max-width: 100%;
+  }
+
+  .card {
+    aspect-ratio: 4 / 3;
+    max-height: 350px;
+  }
+
+  .cardFace {
+    padding: 24px 20px;
+  }
+
+  .cardMainText {
+    margin-bottom: 16px;
+  }
+
+  .cardLabel {
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  .example {
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .flipHint {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+
+  .navigation {
+    gap: 12px;
+  }
+
+  .navButton {
+    padding: 10px 20px;
+    min-width: 100px;
+    font-size: 14px;
+  }
+
+  .cardCounter {
+    padding: 8px 16px;
+    font-size: 15px;
+    min-width: 80px;
+  }
+
+  .hints {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .hints span {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .headerContent {
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .backButton {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .card {
+    aspect-ratio: 1 / 1;
+    max-height: 300px;
+  }
+
+  .cardFace {
+    padding: 20px 16px;
+  }
+
+  .cardMainText {
+    font-size: clamp(24px, 8vw, 36px);
+  }
+
+  .navigation {
+    gap: 8px;
+    width: 100%;
+  }
+
+  .navButton {
+    flex: 1;
+    min-width: auto;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .cardCounter {
+    order: -1;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .hints {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hints span {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.backButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.backButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(-4px);
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 24px;
+  color: #ffffff;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.progressText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  min-width: 80px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  max-width: 400px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Main Content Area */
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+/* Card Wrapper */
+.cardWrapper {
+  perspective: 1000px;
+  margin-bottom: 48px;
+}
+
+.card {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  cursor: pointer;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.cardFace {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.cardBack {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+.cardContent {
+  text-align: center;
+  width: 100%;
+}
+
+.cardLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+
+.cardMainText {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 32px;
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+.example {
+  margin-top: 24px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  font-size: 16px;
+  color: #475569;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.example strong {
+  color: #1e293b;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.flipHint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.flipHint svg {
+  opacity: 0.6;
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.navButton {
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  justify-content: center;
+}
+
 .navButton:hover:not(:disabled) {
-  background: #e2e8f0;
-  border-color: #94a3b8;
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
 .navButton:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
+}
+
+.cardCounter {
+  padding: 12px 24px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  min-width: 100px;
+  text-align: center;
+}
+
+/* Keyboard Hints */
+.hints {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+}
+
+.hints span {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+  padding: 6px 12px;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Loading & Error */
+.loading,
+.error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-size: 18px;
+  color: #64748b;
+}
+
+.error button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding: 70px 16px 40px;
+  .header {
+    padding: 24px 16px;
   }
 
-  .cardContainer {
+  .title {
+    font-size: 24px;
+  }
+
+  .main {
+    padding: 40px 16px;
+  }
+
+  .card {
     height: 350px;
   }
 
-  .wordText {
+  .cardFace {
+    padding: 32px 24px;
+  }
+
+  .cardMainText {
     font-size: 36px;
   }
 
-  .cardContent {
-    padding: 30px;
+  .navigation {
+    gap: 16px;
+  }
+
+  .navButton {
+    padding: 12px 20px;
+    min-width: 100px;
+    font-size: 14px;
+  }
+
+  .hints {
+    flex-direction: column;
+    gap: 12px;
   }
 }
-

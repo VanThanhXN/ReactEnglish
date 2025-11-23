@@ -237,7 +237,8 @@
   font-size: 14px;
 }
 
-.formGroup input {
+.formGroup input,
+.formGroup select {
   width: 100%;
   padding: 12px 16px;
   border: 1px solid #ddd;
@@ -247,9 +248,11 @@
   box-sizing: border-box;
   appearance: none;
   -webkit-appearance: none;
+  background-color: #ffffff;
 }
 
-.formGroup input:focus {
+.formGroup input:focus,
+.formGroup select:focus {
   outline: none;
   border-color: #1a1a1a;
 }

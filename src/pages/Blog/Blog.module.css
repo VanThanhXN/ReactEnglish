@@ -9,14 +9,12 @@
 /* Hero Section */
 .hero {
   position: relative;
-  padding: 80px 24px;
-  text-align: center;
-  color: #ffffff;
-  overflow: hidden;
-  min-height: 300px;
+  min-height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  margin-bottom: 0;
 }
 
 .heroBackground {
@@ -47,9 +45,12 @@
 
 .heroContent {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+  color: #ffffff;
   animation: fadeInUp 0.8s ease-out;
 }
 

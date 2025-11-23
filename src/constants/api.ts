@@ -15,8 +15,20 @@ export const API_ENDPOINTS = {
   // Admin endpoints
   GET_ALL_USERS: "/users",
   // Exam endpoints
-  CREATE_EXAM: "/create-exam",
-  GET_ALL_EXAMS: "/get-all-exam",
-  GET_EXAM_BY_ID: "/exam",
+  CREATE_EXAM: "/exam/create-exam",
+  GET_ALL_EXAMS: "/exam/get-all-exam",
+  GET_EXAM_BY_ID: "/exam/exam-by-id",
+  UPDATE_EXAM: "/exam/update-exam",
+  DELETE_EXAM: "/exam/delete-exam",
+  CREATE_QUESTION: "/exam/create-question",
+  UPDATE_QUESTION: "/exam/update-question",
+  DELETE_QUESTION: "/exam/delete-question",
+  GET_QUESTIONS_BY_EXAM: "/exam",
+  // Flashcard endpoints
+  CREATE_DECK: "/flashcard/create-deck",
+  GET_ALL_DECKS: "/flashcard/get-all-deck",
+  GET_DECK_BY_ID: "/flashcard/deck",
+  UPDATE_DECK: "/flashcard/deck",
+  DELETE_DECK: "/flashcard/deck",
   // Thêm các endpoint khác nếu cần
 };

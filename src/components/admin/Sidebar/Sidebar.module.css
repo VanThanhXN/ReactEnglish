@@ -23,6 +23,33 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
+}
+
+.toggleButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  min-width: 32px;
+  min-height: 32px;
+  flex-shrink: 0;
+}
+
+.toggleButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.toggleButton svg {
+  width: 18px;
+  height: 18px;
 }
 
 .logoText {
@@ -175,6 +202,17 @@
     padding: 20px 16px;
   }
 
+  .toggleButton {
+    min-width: 28px;
+    min-height: 28px;
+    padding: 5px;
+  }
+
+  .toggleButton svg {
+    width: 16px;
+    height: 16px;
+  }
+
   .logoText {
     font-size: 18px;
   }
@@ -215,6 +253,17 @@
 
   .sidebarHeader {
     padding: 16px 12px;
+  }
+
+  .toggleButton {
+    min-width: 24px;
+    min-height: 24px;
+    padding: 4px;
+  }
+
+  .toggleButton svg {
+    width: 14px;
+    height: 14px;
   }
 
   .logoText {

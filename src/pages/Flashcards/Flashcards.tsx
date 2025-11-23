@@ -1,7 +1,14 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FlashcardCard from "../../components/common/FlashcardCard/FlashcardCard";
 import type { Flashcard } from "../../components/common/FlashcardCard/FlashcardCard";
+import {
+  getDecks,
+  createDeck,
+  updateDeck,
+  deleteDeck,
+  type FlashcardDeck,
+} from "../../services/flashcardService";
 import styles from "./Flashcards.module.css";
 
 const Flashcards: React.FC = () => {
@@ -13,101 +20,77 @@ const Flashcards: React.FC = () => {
   );
   const [newFlashcard, setNewFlashcard] = useState({
     name: "",
-    language: "",
     description: "",
   });
+  const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
-  // Mock data - sẽ thay thế bằng API call sau
-  const [flashcards, setFlashcards] = useState<Flashcard[]>([
-    {
-      id: 1,
-      title: "Từ vựng tiếng Anh cơ bản",
-      description: "500 từ vựng tiếng Anh thông dụng nhất",
-      totalCards: 500,
-      language: "English",
-      category: "Từ vựng",
-      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80",
-    },
-    {
-      id: 2,
-      title: "Ngữ pháp tiếng Anh",
-      description: "Các cấu trúc ngữ pháp quan trọng",
-      totalCards: 200,
-      language: "English",
-      category: "Ngữ pháp",
-      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80",
-    },
-    {
-      id: 3,
-      title: "Từ vựng TOEIC",
-      description: "Từ vựng thường gặp trong kỳ thi TOEIC",
-      totalCards: 1000,
-      language: "English",
-      category: "TOEIC",
-      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80",
-    },
-    {
-      id: 4,
-      title: "Từ vựng IELTS",
-      description: "Từ vựng nâng cao cho kỳ thi IELTS",
-      totalCards: 800,
-      language: "English",
-      category: "IELTS",
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
-    },
-    {
-      id: 5,
-      title: "Tiếng Anh Giao Tiếp",
-      description: "Các cụm từ và câu giao tiếp thông dụng",
-      totalCards: 300,
-      language: "English",
-      category: "Giao tiếp",
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
-    },
-    {
-      id: 6,
-      title: "Tiếng Anh Cơ Bản",
-      description: "Từ vựng và ngữ pháp cơ bản cho người mới bắt đầu",
-      totalCards: 400,
-      language: "English",
-      category: "Cơ bản",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
-    },
-  ]);
+  // Fetch decks từ API
+  useEffect(() => {
+    fetchDecks();
+  }, []);
 
-  const handleCreateFlashcard = () => {
+  const fetchDecks = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await getDecks();
+      
+      if (response.success && response.data) {
+        const formattedFlashcards: Flashcard[] = response.data.map((deck, index) => ({
+          id: deck.id,
+          title: deck.name,
+          description: deck.description,
+          totalCards: deck.totalCards || 0,
+          language: deck.language,
+          category: deck.category,
+          image: deck.image,
+        }));
+
+        setFlashcards(formattedFlashcards);
+      }
+    } catch (err: any) {
+      console.error("Error fetching decks:", err);
+      setError(err.message || "Không thể tải danh sách flashcard");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateFlashcard = async () => {
     if (!newFlashcard.name.trim()) {
       alert("Vui lòng nhập tên flashcard");
       return;
     }
 
-    const flashcardImages = [
-      "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80",
-      "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80",
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80",
-      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
-    ];
+    try {
+      setLoading(true);
+      const response = await createDeck({
+        name: newFlashcard.name,
+        description: newFlashcard.description,
+      });
 
-    const newId = Math.max(...flashcards.map((f) => f.id), 0) + 1;
-    const newCard: Flashcard = {
-      id: newId,
-      title: newFlashcard.name,
-      description: newFlashcard.description,
-      language: newFlashcard.language || "English",
-      totalCards: 0,
-      category: "Tùy chỉnh",
-      image: flashcardImages[newId % flashcardImages.length],
-    };
-
-    setFlashcards([...flashcards, newCard]);
-    setNewFlashcard({ name: "", language: "", description: "" });
-    setShowCreateModal(false);
+      if (response.success) {
+        setSuccessMessage("Tạo flashcard thành công!");
+        setNewFlashcard({ name: "", description: "" });
+        setShowCreateModal(false);
+        // Refresh danh sách
+        await fetchDecks();
+      }
+    } catch (err: any) {
+      console.error("Error creating deck:", err);
+      alert(err.message || "Không thể tạo flashcard");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancelCreate = () => {
-    setNewFlashcard({ name: "", language: "", description: "" });
+    setNewFlashcard({ name: "", description: "" });
     setEditingFlashcard(null);
     setShowCreateModal(false);
   };
@@ -116,43 +99,66 @@ const Flashcards: React.FC = () => {
     setEditingFlashcard(flashcard);
     setNewFlashcard({
       name: flashcard.title,
-      language: flashcard.language || "",
       description: flashcard.description || "",
     });
     setShowCreateModal(true);
   };
 
   const handleDelete = (id: number) => {
-    setFlashcards(flashcards.filter((f) => f.id !== id));
+    setDeletingId(id);
+    setShowDeleteModal(true);
   };
 
-  const handleUpdateFlashcard = () => {
+  const confirmDelete = async () => {
+    if (!deletingId) return;
+
+    try {
+      setLoading(true);
+      await deleteDeck(deletingId);
+      setSuccessMessage("Xóa flashcard thành công!");
+      setShowDeleteModal(false);
+      setDeletingId(null);
+      // Refresh danh sách
+      await fetchDecks();
+    } catch (err: any) {
+      console.error("Error deleting deck:", err);
+      alert(err.message || "Không thể xóa flashcard");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateFlashcard = async () => {
     if (!newFlashcard.name.trim()) {
       alert("Vui lòng nhập tên flashcard");
       return;
     }
 
     if (editingFlashcard) {
-      setFlashcards(
-        flashcards.map((f) =>
-          f.id === editingFlashcard.id
-            ? {
-                ...f,
-                title: newFlashcard.name,
-                description: newFlashcard.description,
-                language: newFlashcard.language || "English",
-              }
-            : f
-        )
-      );
-      setEditingFlashcard(null);
-    } else {
-      handleCreateFlashcard();
-      return;
-    }
+      try {
+        setLoading(true);
+        const response = await updateDeck(editingFlashcard.id, {
+          name: newFlashcard.name,
+          description: newFlashcard.description,
+        });
 
-    setNewFlashcard({ name: "", language: "", description: "" });
-    setShowCreateModal(false);
+        if (response.success) {
+          setSuccessMessage("Cập nhật flashcard thành công!");
+          setEditingFlashcard(null);
+          setNewFlashcard({ name: "", description: "" });
+          setShowCreateModal(false);
+          // Refresh danh sách
+          await fetchDecks();
+        }
+      } catch (err: any) {
+        console.error("Error updating deck:", err);
+        alert(err.message || "Không thể cập nhật flashcard");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      await handleCreateFlashcard();
+    }
   };
 
   const categories = useMemo(() => {
@@ -173,7 +179,7 @@ const Flashcards: React.FC = () => {
       const matchesCategory = selectedCategory === "all" || flashcard.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [flashcards, searchQuery, selectedCategory]);
 
   return (
     <div className={styles.container}>
@@ -257,7 +263,18 @@ const Flashcards: React.FC = () => {
 
       {/* Flashcards Grid */}
       <div className={styles.flashcardsSection}>
-        {filteredFlashcards.length > 0 ? (
+        {loading ? (
+          <div className={styles.loadingState}>
+            <p>Đang tải...</p>
+          </div>
+        ) : error ? (
+          <div className={styles.errorState}>
+            <p className={styles.errorText}>{error}</p>
+            <button className={styles.retryButton} onClick={fetchDecks}>
+              Thử lại
+            </button>
+          </div>
+        ) : filteredFlashcards.length > 0 ? (
           <div className={styles.flashcardsGrid}>
             {filteredFlashcards.map((flashcard) => (
               <FlashcardCard
@@ -329,29 +346,6 @@ const Flashcards: React.FC = () => {
                 />
               </div>
 
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Ngôn ngữ</label>
-                <select
-                  className={styles.formInput}
-                  value={newFlashcard.language}
-                  onChange={(e) =>
-                    setNewFlashcard({
-                      ...newFlashcard,
-                      language: e.target.value,
-                    })
-                  }
-                >
-                  <option value="">Chọn ngôn ngữ</option>
-                  <option value="English">English</option>
-                  <option value="Vietnamese">Vietnamese</option>
-                  <option value="French">French</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="German">German</option>
-                  <option value="Japanese">Japanese</option>
-                  <option value="Korean">Korean</option>
-                  <option value="Chinese">Chinese</option>
-                </select>
-              </div>
 
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Mô tả</label>
@@ -382,6 +376,77 @@ const Flashcards: React.FC = () => {
                 onClick={handleUpdateFlashcard}
               >
                 {editingFlashcard ? "Cập nhật" : "Tạo Flashcard"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {successMessage && (
+        <div className={styles.successOverlay}>
+          <div className={styles.successModal}>
+            <div className={styles.successIcon}>
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h3 className={styles.successTitle}>Thành công!</h3>
+            <p className={styles.successMessage}>{successMessage}</p>
+            <button
+              className={styles.successButton}
+              onClick={() => setSuccessMessage(null)}
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className={styles.successOverlay}>
+          <div className={styles.successModal}>
+            <div className={styles.deleteIcon}>
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 6h18" />
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
+            </div>
+            <h3 className={styles.deleteTitle}>Xác nhận xóa</h3>
+            <p className={styles.deleteMessage}>
+              Bạn có chắc chắn muốn xóa bộ flashcard này không? Hành động này không thể hoàn tác.
+            </p>
+            <div className={styles.deleteActions}>
+              <button
+                className={styles.cancelButton}
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setDeletingId(null);
+                }}
+              >
+                Hủy
+              </button>
+              <button className={styles.deleteButton} onClick={confirmDelete}>
+                Xóa
               </button>
             </div>
           </div>

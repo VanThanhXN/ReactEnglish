@@ -72,7 +72,7 @@ const Header: React.FC = () => {
     { path: "/dashboard", label: "Trang chủ" },
     { path: "/courses", label: "Khóa học" },
     { path: "/exams", label: "Đề thi" },
-    { path: "/flatcar", label: "Flashcard" },
+    { path: "/flashcards", label: "Flashcard" },
     { path: "/progress", label: "Tiến độ" },
     { path: "/blog", label: "Bài viết" },
   ];

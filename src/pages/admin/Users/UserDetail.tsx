@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getUser, isAuthenticated } from "../../../utils/storage";
 import { getUserById, updateUser, type UpdateUserData } from "../../../services/adminService";
 import AdminLayout from "../../../components/admin/Layout/Layout";
@@ -7,7 +7,6 @@ import type { User } from "../../../types/api";
 import styles from "./UserDetail.module.css";
 
 const AdminUserDetail: React.FC = () => {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const currentUser: User | null = getUser();
   const [user, setUser] = useState<User | null>(null);
@@ -19,21 +18,11 @@ const AdminUserDetail: React.FC = () => {
   const [editData, setEditData] = useState<UpdateUserData>({
     name: "",
     email: "",
+    role: "user",
   });
   const loadedIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Kiểm tra authentication và role
-    if (!isAuthenticated()) {
-      navigate("/admin/login");
-      return;
-    }
-
-    if (currentUser?.role !== "admin") {
-      navigate("/dashboard");
-      return;
-    }
-
     // Lấy thông tin user - chỉ load khi id thay đổi hoặc chưa load id này
     if (id && id !== loadedIdRef.current) {
       loadedIdRef.current = id;
@@ -77,6 +66,7 @@ const AdminUserDetail: React.FC = () => {
       setEditData({
         name: user.name || "",
         email: user.email || "",
+        role: (user.role === "admin" || user.role === "user" ? user.role : "user") as "user" | "admin",
       });
       setIsEditing(true);
       setUpdateError("");
@@ -89,6 +79,7 @@ const AdminUserDetail: React.FC = () => {
     setEditData({
       name: "",
       email: "",
+      role: "user",
     });
   };
 
@@ -128,7 +119,9 @@ const AdminUserDetail: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setEditData((prev: UpdateUserData) => ({
       ...prev,
@@ -258,6 +251,20 @@ const AdminUserDetail: React.FC = () => {
                     required
                     placeholder="example@email.com"
                   />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="editRole">Vai trò *</label>
+                  <select
+                    id="editRole"
+                    name="role"
+                    value={editData.role}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
                 </div>
 
                 <div className={styles.editActions}>

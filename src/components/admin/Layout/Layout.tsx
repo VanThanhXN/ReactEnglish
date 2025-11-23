@@ -7,55 +7,70 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Khởi tạo sidebarOpen dựa trên kích thước màn hình ban đầu
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth > 768;
+    }
+    return false;
+  });
 
-  // Trên desktop, sidebar luôn mở; trên mobile, mặc định đóng
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
+
+  // Chỉ detect mobile/desktop khi resize, không tự động đóng/mở sidebar
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setSidebarOpen(true);
-      } else {
-        setSidebarOpen(false);
-      }
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
     };
 
-    // Set initial state dựa trên kích thước màn hình hiện tại
-    if (window.innerWidth > 768) {
-      setSidebarOpen(true);
-    } else {
-      setSidebarOpen(false);
-    }
+    // Kiểm tra ngay khi component mount
+    handleResize();
 
+    // Lắng nghe sự kiện resize
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+    setSidebarOpen((prev) => !prev);
   };
 
   const closeSidebar = () => {
-    if (window.innerWidth <= 768) {
-      setSidebarOpen(false);
-    }
+    setSidebarOpen(false);
   };
 
   return (
     <div className={styles.layout}>
-      {sidebarOpen && window.innerWidth <= 768 && (
+      {sidebarOpen && isMobile && (
         <div className={styles.overlay} onClick={closeSidebar}></div>
       )}
       <div className={`${styles.sidebarWrapper} ${sidebarOpen ? styles.sidebarOpen : ""}`}>
-        <AdminSidebar />
+        <AdminSidebar onNavigate={closeSidebar} onToggle={toggleSidebar} />
       </div>
-      <div className={styles.mainContent}>
+      <div className={`${styles.mainContent} ${!sidebarOpen ? styles.sidebarClosed : ""}`}>
         <div className={styles.topBar}>
-          <button className={styles.menuToggle} onClick={toggleSidebar} aria-label="Toggle menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
+          <button className={styles.menuToggle} onClick={toggleSidebar} aria-label="Toggle sidebar">
+            {sidebarOpen ? (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            )}
           </button>
         </div>
         <div className={styles.content}>

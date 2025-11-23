@@ -13,7 +13,7 @@ import type {
 export const getUserExams = async (): Promise<GetAllExamsResponse> => {
   try {
     const response = await apiClient.get<GetAllExamsResponse>(
-      API_ENDPOINTS.GET_USER_EXAMS
+      API_ENDPOINTS.GET_ALL_EXAMS
     );
     return response.data;
   } catch (error: any) {
@@ -37,7 +37,7 @@ export const getUserExams = async (): Promise<GetAllExamsResponse> => {
 export const getUserExamById = async (examId: string): Promise<GetExamByIdResponse> => {
   try {
     const response = await apiClient.get<GetExamByIdResponse>(
-      `${API_ENDPOINTS.GET_USER_EXAM_BY_ID}/${examId}`
+      `${API_ENDPOINTS.GET_EXAM_BY_ID}/${examId}`
     );
     return response.data;
   } catch (error: any) {

@@ -1,32 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
-import { getUser, isAuthenticated } from "../../../utils/storage";
-import { getExamById, type ExamDetail } from "../../../services/adminService";
+import { useParams, Link } from "react-router-dom";
+import { 
+  getExamById,
+  type ExamDetail,
+} from "../../../services/adminService";
 import AdminLayout from "../../../components/admin/Layout/Layout";
-import type { User } from "../../../types/api";
 import styles from "./ExamDetail.module.css";
 
 const AdminExamDetail: React.FC = () => {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const currentUser: User | null = getUser();
   const [exam, setExam] = useState<ExamDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const loadedIdRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Kiểm tra authentication và role
-    if (!isAuthenticated()) {
-      navigate("/admin/login");
-      return;
-    }
-
-    if (currentUser?.role !== "admin") {
-      navigate("/dashboard");
-      return;
-    }
-
     // Lấy thông tin exam - chỉ load khi id thay đổi hoặc chưa load id này
     if (id && id !== loadedIdRef.current) {
       loadedIdRef.current = id;
@@ -68,10 +56,6 @@ const AdminExamDetail: React.FC = () => {
     }
   };
 
-  if (!currentUser || currentUser.role !== "admin") {
-    return null;
-  }
-
   return (
     <AdminLayout>
       <div className={styles.container}>
@@ -97,10 +81,6 @@ const AdminExamDetail: React.FC = () => {
             </div>
 
             <div className={styles.examDetails}>
-              <div className={styles.detailRow}>
-                <span className={styles.label}>ID:</span>
-                <span className={styles.value}>{exam.id}</span>
-              </div>
               <div className={styles.detailRow}>
                 <span className={styles.label}>Tiêu đề:</span>
                 <span className={styles.value}>{exam.title}</span>
@@ -146,35 +126,15 @@ const AdminExamDetail: React.FC = () => {
             </div>
 
             <div className={styles.questionsSection}>
-              <h3 className={styles.questionsTitle}>
-                Danh sách câu hỏi ({exam.questions?.length || 0})
-              </h3>
-              {exam.questions && exam.questions.length > 0 ? (
-                <div className={styles.questionsList}>
-                  {exam.questions.map((question, index) => (
-                    <div key={question.id || index} className={styles.questionItem}>
-                      <div className={styles.questionHeader}>
-                        <span className={styles.questionNumber}>Câu {index + 1}</span>
-                        {question.marks && (
-                          <span className={styles.questionMarks}>
-                            {question.marks} điểm
-                          </span>
-                        )}
-                      </div>
-                      {question.questionText && (
-                        <p className={styles.questionText}>{question.questionText}</p>
-                      )}
-                      {question.type && (
-                        <span className={styles.questionType}>Loại: {question.type}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className={styles.noQuestions}>
-                  <p>Chưa có câu hỏi nào trong đề thi này.</p>
-                </div>
-              )}
+              <Link
+                to={`/admin/exams/${exam.id}/questions`}
+                className={styles.manageQuestionsButton}
+              >
+                Quản lý câu hỏi
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </Link>
             </div>
           </div>
         ) : null}
@@ -184,6 +144,3 @@ const AdminExamDetail: React.FC = () => {
 };
 
 export default AdminExamDetail;
-
-
-

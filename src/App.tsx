@@ -25,11 +25,11 @@ function App() {
 
   return (
     <div className={styles.app}>
-      {!isAuthPage && <Header />}
+      {!isAuthPage && !isAdminPage && <Header />}
       <main className={styles.main}>
         <AppRouter />
       </main>
-      {!isAuthPage && !isExamTakePage && <Footer />}
+      {!isAuthPage && !isExamTakePage && !isAdminPage && <Footer />}
     </div>
   );
 }

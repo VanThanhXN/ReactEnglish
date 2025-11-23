@@ -12,12 +12,6 @@ export const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Nếu là admin, redirect về admin dashboard
-    if (user?.role === "admin") {
-      navigate("/admin/dashboard", { replace: true });
-      return;
-    }
-
     // Chỉ fetch exams nếu đã đăng nhập
     if (isAuthenticated() && user) {
       fetchFeaturedExams();
@@ -40,10 +34,6 @@ export const Home: React.FC = () => {
       setLoading(false);
     }
   };
-
-  if (user?.role === "admin") {
-    return null;
-  }
 
   return (
     <div className={styles.container}>
@@ -95,7 +85,7 @@ export const Home: React.FC = () => {
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </Link>
-            <Link to="/flatcar" className={styles.secondaryButton}>
+            <Link to="/flashcards" className={styles.secondaryButton}>
               <svg
                 width="20"
                 height="20"
@@ -394,7 +384,7 @@ export const Home: React.FC = () => {
             </div>
           </Link>
 
-          <Link to="/flatcar" className={styles.featureCard}>
+          <Link to="/flashcards" className={styles.featureCard}>
             <div className={styles.featureImage}>
               <img
                 src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop&q=80"

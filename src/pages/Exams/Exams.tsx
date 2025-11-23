@@ -6,6 +6,7 @@ import styles from "./Exams.module.css";
 const Exams: React.FC = () => {
   const [allExams, setAllExams] = useState<ExamPackage[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -37,12 +38,17 @@ const Exams: React.FC = () => {
   const fetchExams = async () => {
     try {
       setLoading(true);
+      setError("");
       const response = await getExamPackages();
+      
       if (response.success && response.data) {
         setAllExams(response.data);
+      } else {
+        setError(response.message || "Không thể tải danh sách đề thi");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching exams:", error);
+      setError(error.message || "Có lỗi xảy ra khi tải danh sách đề thi. Vui lòng thử lại sau.");
     } finally {
       setLoading(false);
     }
@@ -112,8 +118,22 @@ const Exams: React.FC = () => {
         </div>
       </div>
 
+      {/* Error Message */}
+      {error && (
+        <div className={styles.error} style={{ 
+          padding: "16px", 
+          margin: "20px", 
+          backgroundColor: "#fee", 
+          color: "#c33", 
+          borderRadius: "8px",
+          border: "1px solid #fcc"
+        }}>
+          {error}
+        </div>
+      )}
+
       {/* Results Info */}
-      {!loading && (
+      {!loading && !error && (
         <div className={styles.resultsInfo}>
           <h2 className={styles.resultsTitle}>
             Tìm thấy {filteredExams.length} đề thi
@@ -132,22 +152,9 @@ const Exams: React.FC = () => {
             </div>
           ) : (
             <div className={styles.examsGrid}>
-              {filteredExams.map((exam) => {
-                // Thêm image cho mỗi exam
-                const examImages = [
-                  "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80",
-                  "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
-                  "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80",
-                  "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80",
-                  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
-                  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
-                ];
-                const examWithImage = {
-                  ...exam,
-                  image: examImages[(exam.id - 1) % examImages.length],
-                };
-                return <ExamCard key={exam.id} exam={examWithImage} />;
-              })}
+              {filteredExams.map((exam) => (
+                <ExamCard key={exam.id} exam={exam} />
+              ))}
             </div>
           )}
         </div>

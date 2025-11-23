@@ -9,14 +9,12 @@
 /* Hero Section */
 .hero {
   position: relative;
-  padding: 80px 24px;
-  text-align: center;
-  color: #ffffff;
-  overflow: hidden;
-  min-height: 300px;
+  min-height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  margin-bottom: 0;
 }
 
 .heroBackground {
@@ -47,9 +45,12 @@
 
 .heroContent {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+  color: #ffffff;
   animation: fadeInUp 0.8s ease-out;
 }
 
@@ -238,6 +239,49 @@
   font-size: 16px;
   font-weight: 600;
   margin: 0;
+}
+
+/* Loading State */
+.loadingState {
+  text-align: center;
+  padding: 80px 20px;
+  color: #64748b;
+}
+
+.loadingState p {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Error State */
+.errorState {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.errorText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ef4444;
+  margin: 0 0 16px 0;
+}
+
+.retryButton {
+  padding: 10px 20px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryButton:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 /* Responsive */
@@ -570,4 +614,166 @@
   .modalSubmit {
     width: 100%;
   }
+}
+
+/* Success Modal Styles */
+.successOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  animation: fadeIn 0.3s ease;
+}
+
+.successModal {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  background: #dcfce7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  color: #16a34a;
+}
+
+.successTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+}
+
+.successMessage {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+.successButton {
+  background: #16a34a;
+  color: #ffffff;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.successButton:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.successButton:active {
+  transform: translateY(0);
+}
+
+/* Delete Modal Styles */
+.deleteIcon {
+  width: 80px;
+  height: 80px;
+  background: #fee2e2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  color: #ef4444;
+}
+
+.deleteTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+}
+
+.deleteMessage {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+.deleteActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.deleteButton {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.deleteButton:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.deleteButton:active {
+  transform: translateY(0);
+}
+
+.cancelButton {
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.cancelButton:hover {
+  background: #e2e8f0;
+  color: #0f172a;
 }

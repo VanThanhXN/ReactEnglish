@@ -32,9 +32,7 @@ const FlashcardCard: React.FC<FlashcardCardProps> = ({
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (window.confirm("Bạn có chắc chắn muốn xóa flashcard này không?")) {
-      onDelete?.(flashcard.id);
-    }
+    onDelete?.(flashcard.id);
   };
 
   return (
