@@ -25,7 +25,7 @@ export const Home: React.FC = () => {
     try {
       setLoading(true);
       const response = await getExamPackages();
-      if (response.success && response.data) {
+      if (response.success && response.data && Array.isArray(response.data)) {
         setFeaturedExams(response.data.slice(0, 3));
       }
     } catch (error) {

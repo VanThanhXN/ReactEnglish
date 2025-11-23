@@ -38,7 +38,7 @@ const Courses: React.FC = () => {
     try {
       setLoading(true);
       const response = await getCourses();
-      if (response.success) {
+      if (response.success && response.data && Array.isArray(response.data)) {
         setAllCourses(response.data);
       }
     } catch (error) {

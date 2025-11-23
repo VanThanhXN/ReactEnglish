@@ -26,7 +26,7 @@ const Progress: React.FC = () => {
         setLoading(true);
         const response = await getDecks();
         
-        if (response.success && response.data) {
+        if (response.success && response.data && Array.isArray(response.data)) {
           setDecks(response.data);
           
           // Calculate stats

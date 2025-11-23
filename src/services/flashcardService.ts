@@ -107,9 +107,26 @@ export const getDecks = async (): Promise<GetDecksResponse> => {
   try {
     const response = await apiClient.get<any>("/flashcard/get-all-deck");
 
+    // Xử lý nhiều format response khác nhau
+    let decks: FlashcardDeck[] = [];
+    
+    if (Array.isArray(response.data)) {
+      // API trả về mảng trực tiếp
+      decks = response.data;
+    } else if (response.data?.data && Array.isArray(response.data.data)) {
+      // API trả về { data: [...] }
+      decks = response.data.data;
+    } else if (response.data?.decks && Array.isArray(response.data.decks)) {
+      // API trả về { decks: [...] }
+      decks = response.data.decks;
+    } else if (response.data && typeof response.data === "object") {
+      // Nếu là object đơn, chuyển thành array
+      decks = [response.data];
+    }
+
     return {
       success: true,
-      data: response.data.data || response.data,
+      data: decks,
     };
   } catch (error: any) {
     console.error("Error fetching decks:", error);

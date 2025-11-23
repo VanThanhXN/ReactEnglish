@@ -41,7 +41,7 @@ const Exams: React.FC = () => {
       setError("");
       const response = await getExamPackages();
       
-      if (response.success && response.data) {
+      if (response.success && response.data && Array.isArray(response.data)) {
         setAllExams(response.data);
       } else {
         setError(response.message || "Không thể tải danh sách đề thi");

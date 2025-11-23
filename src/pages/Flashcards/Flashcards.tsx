@@ -40,7 +40,7 @@ const Flashcards: React.FC = () => {
       setError(null);
       const response = await getDecks();
       
-      if (response.success && response.data) {
+      if (response.success && response.data && Array.isArray(response.data)) {
         const formattedFlashcards: Flashcard[] = response.data.map((deck, index) => ({
           id: deck.id,
           title: deck.name,
